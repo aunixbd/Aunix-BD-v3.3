@@ -1,0 +1,2745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aunix BD - Your premium digital store for seamless shopping experience.">
+    <meta name="author" content="Aunix BD">
+    <meta name="keywords" content="Aunix BD, digital store, AI assistant, premium products, online shopping, Bangladesh">
+    <link rel="icon" href="favicon32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="favicon16.png" type="image/png" sizes="16x16" />
+    <title>Aunix BD - Premium Digital Store & AI Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+  <div class="theme-cyberpunk"></div>
+<!-- Splash Screen -->
+<div id="splashScreen" style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+">
+  <video id="splashVideo" autoplay muted playsinline style="
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+  ">
+    <source src="splash.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+<script>
+  const splashVideo = document.getElementById('splashVideo');
+  const splashScreen = document.getElementById('splashScreen');
+
+  // Show video only after it's ready to play
+  splashVideo.addEventListener('canplay', () => {
+    splashVideo.style.display = 'block';
+    splashVideo.play().catch(() => {
+      splashScreen.style.display = 'none';
+    });
+  });
+
+  // Remove splash screen when video ends
+  splashVideo.addEventListener('ended', () => {
+    splashScreen.style.display = 'none';
+  });
+
+  // Fallback: hide splash screen after 15s max
+  setTimeout(() => {
+    splashScreen.style.display = 'none';
+  }, 15000);
+</script>
+
+
+    <!-- Sidebar Toggle -->
+    <div class="sidebar-toggle" id="sidebarToggle">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Enhanced Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <!-- Enhanced User Info Section with Edit Profile -->
+        <div class="sidebar-user-info" id="userInfoSection">
+            <div class="user-avatar" id="userAvatar">G</div>
+            <div class="user-name" id="userName">Guest User</div>
+            <div class="user-status" id="userStatus">Welcome to Aunix BD</div>
+            <div class="edit-profile-hint">Click to edit profile</div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="cartCount">0</div>
+                <div class="stat-label">Cart Items</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="orderCount">0</div>
+                <div class="stat-label">Orders</div>
+            </div>
+        </div>
+
+        <!-- Currency Converter -->
+        <div class="currency-converter">
+            <div class="converter-title">💱 Currency Converter</div>
+            <input type="number" class="converter-input" id="bdtInput" placeholder="Enter BDT amount">
+            <div class="converter-result" id="usdResult">$0.00 USD</div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="sidebar-section">
+            <div class="sidebar-title">⚡ Quick Links</div>
+            <div class="quick-links">
+                <div class="quick-link" data-action="popular">🔥 Popular</div>
+                <div class="quick-link" data-action="new">✨ New</div>
+                <div class="quick-link" data-action="cheap">💰 Cheap</div>
+                <div class="quick-link" data-action="premium">👑 Premium</div>
+            </div>
+        </div>
+
+        <!-- Enhanced Price Range Filter -->
+        <div class="sidebar-section">
+            <div class="sidebar-title">💰 Price Filter</div>
+            <div class="price-range-filter">
+                <input type="range" class="price-range-slider" id="priceRange" min="0" max="10000" value="10000">
+                <div class="price-range-values">
+                    <span>0 TK</span>
+                    <span id="maxPrice">10000 TK</span>
+                </div>
+                <div class="price-filter-info" id="priceFilterInfo">Showing all products</div>
+                <button class="clear-filter-btn" id="clearFilterBtn">Clear Filter</button>
+            </div>
+        </div>
+
+        <!-- Theme Selection -->
+        <div class="sidebar-section">
+            <div class="sidebar-title" data-translate="themes">🎨 Themes</div>
+            <div class="theme-option" data-theme="cyberpunk">
+                <div class="theme-color" style="background: linear-gradient(135deg, #ff0080, #8000ff);"></div>
+                <span data-translate="theme-cyberpunk">Cyberpunk Neon</span>
+            </div>
+            <div class="theme-option" data-theme="neon-city">
+                <div class="theme-color" style="background: linear-gradient(135deg, #00ffff, #0080ff);"></div>
+                <span data-translate="theme-neon-city">Neon City</span>
+            </div>
+            <div class="theme-option" data-theme="aurora">
+                <div class="theme-color" style="background: linear-gradient(135deg, #7c3aed, #ec4899, #f59e0b);"></div>
+                <span data-translate="theme-aurora">Aurora Borealis</span>
+            </div>
+            <div class="theme-option" data-theme="sunset">
+                <div class="theme-color" style="background: linear-gradient(135deg, #ff6b35, #f7931e, #ffcd3c);"></div>
+                <span data-translate="theme-sunset">Sunset Vibes</span>
+            </div>
+            <div class="theme-option" data-theme="ocean">
+                <div class="theme-color" style="background: linear-gradient(135deg, #0ea5e9, #06b6d4, #10b981);"></div>
+                <span data-translate="theme-ocean">Ocean Depths</span>
+            </div>
+            <div class="theme-option" data-theme="forest">
+                <div class="theme-color" style="background: linear-gradient(135deg, #22c55e, #84cc16, #eab308);"></div>
+                <span data-translate="theme-forest">Forest Magic</span>
+            </div>
+            <div class="theme-option" data-theme="galaxy">
+                <div class="theme-color" style="background: linear-gradient(135deg, #8b5cf6, #ec4899, #06b6d4);"></div>
+                <span data-translate="theme-galaxy">Galaxy Dreams</span>
+            </div>
+            <div class="theme-option" data-theme="fire">
+                <div class="theme-color" style="background: linear-gradient(135deg, #dc2626, #ea580c, #f59e0b);"></div>
+                <span data-translate="theme-fire">Fire Storm</span>
+            </div>
+            <div class="theme-option" data-theme="black-red">
+                <div class="theme-color" style="background: linear-gradient(135deg, #ff0000, #000000);"></div>
+                <span data-translate="theme-black-red">Black Red</span>
+            </div>
+        </div>
+
+        <!-- Language Selection -->
+        <div class="sidebar-section">
+            <div class="sidebar-title" data-translate="language">🌐 Language</div>
+            <div class="lang-option active" data-lang="en">
+                <span>🇺🇸</span>
+                <span>English</span>
+            </div>
+            <div class="lang-option" data-lang="bn">
+                <span>🇧🇩</span>
+                <span>বাংলা</span>
+            </div>
+            <div class="lang-option" data-lang="ar">
+                <span>🇸🇦</span>
+                <span>العربية</span>
+            </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="sidebar-section">
+            <div class="sidebar-title" data-translate="settings">⚙️ Settings</div>
+            <div class="setting-item">
+                <span data-translate="notifications">🔔 Notifications</span>
+                <div class="toggle-switch active" data-setting="notifications">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="setting-item">
+                <span data-translate="sound-effects">🎵 Sound Effects</span>
+                <div class="toggle-switch" data-setting="sounds">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="setting-item">
+                <span data-translate="animations">✨ Animations</span>
+                <div class="toggle-switch active" data-setting="animations">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="setting-item">
+                <span data-translate="auto-dark">🌙 Auto Dark Mode</span>
+                <div class="toggle-switch" data-setting="autoDark">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Quick Actions -->
+        <div class="sidebar-section">
+            <div class="sidebar-title" data-translate="quick-actions">⚡ Quick Actions</div>
+            <button class="action-btn" id="clearCacheBtn" data-translate="clear-cache">
+                🗑️ Clear Cache
+            </button>
+            <button class="action-btn" id="exportDataBtn" data-translate="export-data">
+                📤 Export Data
+            </button>
+            <button class="action-btn" id="resetSettingsBtn" data-translate="reset-settings">
+                🔄 Reset Settings
+            </button>
+            <button class="action-btn" id="shareBtn">
+                📱 Share Store
+            </button>
+            <button class="action-btn" id="feedbackBtn">
+                💬 Send Feedback
+            </button>
+        </div>
+    </div>
+
+    <!-- Profile Edit Modal -->
+    <div class="profile-modal" id="profileModal">
+        <div class="profile-modal-content">
+            <div class="profile-modal-header">
+                <h2 class="profile-modal-title">✏️ Edit Profile</h2>
+                <button class="profile-close-btn" id="profileCloseBtn">×</button>
+            </div>
+
+            <form id="profileForm">
+                <div class="profile-form-group">
+                    <label>👤 Display Name</label>
+                    <input type="text" id="profileName" placeholder="Enter your name" maxlength="20">
+                </div>
+
+                <div class="profile-form-group">
+                    <label>📧 Email (Optional)</label>
+                    <input type="email" id="profileEmail" placeholder="Enter your email">
+                </div>
+
+                <div class="profile-form-group">
+                    <label>🎂 Age (Optional)</label>
+                    <input type="number" id="profileAge" placeholder="Enter your age" min="13" max="100">
+                </div>
+
+                <div class="profile-form-group">
+                    <label>🌍 Country</label>
+                    <select id="profileCountry">
+                        <option value="">Select Country</option>
+                        <option value="BD">🇧🇩 Bangladesh</option>
+                        <option value="IN">🇮🇳 India</option>
+                        <option value="PK">🇵🇰 Pakistan</option>
+                        <option value="US">🇺🇸 United States</option>
+                        <option value="UK">🇬🇧 United Kingdom</option>
+                        <option value="CA">🇨🇦 Canada</option>
+                        <option value="AU">🇦🇺 Australia</option>
+                        <option value="DE">🇩🇪 Germany</option>
+                        <option value="FR">🇫🇷 France</option>
+                        <option value="JP">🇯🇵 Japan</option>
+                        <option value="KR">🇰🇷 South Korea</option>
+                        <option value="CN">🇨🇳 China</option>
+                        <option value="BR">🇧🇷 Brazil</option>
+                        <option value="MX">🇲🇽 Mexico</option>
+                        <option value="RU">🇷🇺 Russia</option>
+                        <option value="SA">🇸🇦 Saudi Arabia</option>
+                        <option value="AE">🇦🇪 UAE</option>
+                        <option value="EG">🇪🇬 Egypt</option>
+                        <option value="NG">🇳🇬 Nigeria</option>
+                        <option value="ZA">🇿🇦 South Africa</option>
+                    </select>
+                </div>
+
+                <div class="profile-form-group">
+                    <label>🎮 Favorite Game</label>
+                    <select id="profileGame">
+                        <option value="">Select Game</option>
+                        <option value="Free Fire">🔥 Free Fire</option>
+                        <option value="PUBG">🔫 PUBG</option>
+                        <option value="Minecraft">⛏️ Minecraft</option>
+                        <option value="Roblox">🧱 Roblox</option>
+                        <option value="Fortnite">🏗️ Fortnite</option>
+                        <option value="Call of Duty">🎯 Call of Duty</option>
+                        <option value="Valorant">🎪 Valorant</option>
+                        <option value="Among Us">👾 Among Us</option>
+                        <option value="Genshin Impact">⚔️ Genshin Impact</option>
+                        <option value="Other">🎮 Other</option>
+                    </select>
+                </div>
+
+                <div class="profile-form-group">
+                    <label>🎭 Choose Avatar</label>
+                    <div class="avatar-selection">
+                        <div class="avatar-option" data-avatar="😊">😊</div>
+                        <div class="avatar-option" data-avatar="😎">😎</div>
+                        <div class="avatar-option" data-avatar="🤖">🤖</div>
+                        <div class="avatar-option" data-avatar="👑">👑</div>
+                        <div class="avatar-option" data-avatar="🔥">🔥</div>
+                        <div class="avatar-option" data-avatar="⚡">⚡</div>
+                        <div class="avatar-option" data-avatar="🎮">🎮</div>
+                        <div class="avatar-option" data-avatar="💎">💎</div>
+                        <div class="avatar-option" data-avatar="🚀">🚀</div>
+                        <div class="avatar-option" data-avatar="🌟">🌟</div>
+                        <div class="avatar-option" data-avatar="🎯">🎯</div>
+                        <div class="avatar-option" data-avatar="🏆">🏆</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="profile-save-btn">💾 Save Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="main-title">🔥 Aunix BD - Premium Digital Store</h1>
+            <div class="subtitle" id="main-subtitle">GET THE BEST DEALS HERE !</div>
+        </div>
+
+        <!-- Enhanced Search Bar -->
+        <div class="search-container">
+            <input type="text" class="search-bar" id="searchBar" placeholder="Search for products, games, or services...">
+            <div class="search-icon">🔍</div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+
+        <div class="mode-switch">
+            <button class="mode-btn active" id="bdtModeBtn" data-translate="bdt-mode-btn">💰 BDT Mode</button>
+            <button class="mode-btn" id="cryptoModeBtn" data-translate="crypto-mode-btn">🔗 Crypto Mode</button>
+        </div>
+
+        <!-- BDT Mode Pages -->
+        <div id="bdt-mode">
+            <div class="page-container">
+                <!-- Home Page -->
+                <div id="home-page" class="page active">
+                    <div class="filter-status hidden" id="filterStatus">Showing all products</div>
+                    <div class="category-grid" id="category-grid">
+                        <div class="category-card" data-category="freefire">
+                            <span class="category-emoji">🔥</span>
+                            <div class="category-title" data-translate="freefire">Free Fire</div>
+                        </div>
+                        <div class="category-card" data-category="pubg">
+                            <span class="category-emoji">🔫</span>
+                            <div class="category-title" data-translate="pubg">PUBG UC</div>
+                        </div>
+                        <div class="category-card" data-category="discord">
+                            <span class="category-emoji">💬</span>
+                            <div class="category-title" data-translate="discord">Discord</div>
+                        </div>
+                        <div class="category-card" data-category="minecraft">
+                            <span class="category-emoji">⛏️</span>
+                            <div class="category-title" data-translate="minecraft">Minecraft</div>
+                        </div>
+                        <div class="category-card" data-category="social">
+                            <span class="category-emoji">📺</span>
+                            <div class="category-title" data-translate="social">Social Media</div>
+                        </div>
+                        <div class="category-card" data-category="premium">
+                            <span class="category-emoji">🔐</span>
+                            <div class="category-title" data-translate="premium">Aunix Premium</div>
+                        </div>
+                        <div class="category-card" data-category="roblox">
+                            <span class="category-emoji">🧱</span>
+                            <div class="category-title" data-translate="roblox">Roblox Robux</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Page -->
+                <div id="products-page" class="page">
+                    <button class="back-btn" id="backToCategories" data-translate="back">← Back to Categories</button>
+                    <h2 id="category-title"></h2>
+                    <div class="filter-status hidden" id="productFilterStatus">Showing all products</div>
+                    <div class="product-grid" id="product-grid"></div>
+                </div>
+
+                <!-- Orders Page -->
+                <div id="orders-page" class="page">
+                    <h2 data-translate="cart">🛒 Your Cart</h2>
+                    <div id="cart-items"></div>
+                    <button class="submit-btn" id="checkoutBtn" style="margin: 10px 10px;" data-translate="checkout">Checkout</button>
+                    
+                    <h2 data-translate="order-history">📋 Order History</h2>
+                    <div id="order-history"></div>
+                </div>
+
+                <!-- Checkout Page -->
+                <div id="checkout-page" class="page">
+                    <button class="back-btn" id="backToCart" data-translate="back-cart">← Back to Cart</button>
+                    <h2 data-translate="checkout-title">💳 Checkout</h2>
+                    <div class="checkout-form">
+                        <form action="https://formspree.io/f/xjkrplon" method="POST" id="checkoutForm">
+                            <input type="hidden" name="_subject" value="🧾 New Order from Aunix BD!">
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_template" value="box">
+
+                            <div class="form-group">
+                                <label data-translate="product-name">Product Name</label>
+                                <input type="text" name="Product Name" id="product-name" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="customer-name">Your Name *</label>
+                                <input type="text" name="Customer Name" id="customer-name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label style="color: var(--success);" data-translate="payment-info">📱 Send Money to: <strong>01400378141</strong></label>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="payment-method">Payment Method *</label>
+                                <select name="Payment Method" id="payment-method" required>
+                                    <option value="" data-translate="select-payment">Select Payment Method</option>
+                                    <option value="bKash">bKash</option>
+                                    <option value="Nagad">Nagad</option>
+                                    <option value="Rocket">Rocket</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="payment-number">Payment Number *</label>
+                                <input type="text" name="Payment Number" id="payment-number" required>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="email">Email *</label>
+                                <input type="email" name="Customer Email" id="customer-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="transaction-id">Transaction ID *</label>
+                                <input type="text" name="Transaction ID" id="transaction-id" required>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="discord-id">Discord ID</label>
+                                <input type="text" name="Discord ID" id="discord-id">
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="note">Note</label>
+                                <textarea name="Note" id="note" rows="3"></textarea>
+                            </div>
+                            <div id="extra-fields"></div>
+                            <button type="submit" class="submit-btn" data-translate="place-order">🚀 Place Order</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- About Page -->
+                <div id="about-page" class="page">
+                    <div class="content-card">
+                        <h2 data-translate="about-title">ℹ️ About Aunix BD</h2>
+                        <p data-translate="about-text">Aunix BD is a Bangladesh-based digital service store offering instant delivery of premium subscriptions and game top-ups. We specialize in affordable, fast-access services like Discord Nitro, ChatGPT Plus, Spotify, Netflix, YouTube Premium, and Free Fire diamonds, catering especially to Bangladeshi users.</p>
+                        <p data-translate="about-text2">Aunix BD allows secure purchases using local payment methods like bKash and Nagad, with a user-friendly interface and 24/7 support for smooth digital delivery. Aunix BD is your trusted hub for digital deals at the best prices.</p>
+                        
+                        <div class="social-links">
+                            <a href="https://discord.gg/sJgNMCNh7Q" class="social-link" target="_blank" data-translate="join-discord">💬 Join Discord</a>
+                            <a href="https://t.me/aunixbdworldwide" class="social-link" target="_blank" data-translate="join-telegram">📱 Join Telegram</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOS Page -->
+                <div id="tos-page" class="page">
+                    <div class="content-card">
+                        <h2 data-translate="tos-title">📜 Terms of Service</h2>
+                        <p><strong data-translate="effective-date">Effective Date:</strong> 9 February 2025</p>
+                        <p data-translate="tos-intro">Welcome to AUNIX BD ("we," "our," or "us"). By accessing or using our website, services, or purchasing products, you agree to these Terms of Service ("Terms").</p>
+                        
+                        <h3 data-translate="general-terms">1. General Terms</h3>
+                        <p data-translate="general-terms-text">By using our services, you agree to comply with these terms and all applicable laws.</p>
+                        
+                        <h3 data-translate="products-services">2. Products and Services</h3>
+                        <p data-translate="products-services-text">We provide digital products and services including game top-ups, subscriptions, and premium accounts.</p>
+                        
+                        <h3 data-translate="payment-terms">3. Payment</h3>
+                        <p data-translate="payment-terms-text">All payments must be made through approved payment methods. Prices are in BDT unless otherwise specified.</p>
+                        
+                        <h3 data-translate="refunds">4. Refunds and Cancellations</h3>
+                        <p data-translate="refunds-text">Digital products are non-refundable once delivered. Contact support for any issues.</p>
+                        
+                        <h3 data-translate="prohibited">5. Prohibited Activities</h3>
+                        <p data-translate="prohibited-text">Users may not engage in fraudulent activities, chargebacks, or misuse of services.</p>
+                        
+                        <h3 data-translate="liability">6. Limitation of Liability</h3>
+                        <p data-translate="liability-text">AUNIX BD is not liable for any indirect or consequential damages.</p>
+                        
+                        <h3 data-translate="contact-info">7. Contact Information</h3>
+                        <p data-translate="contact-text">For questions, contact us at: aunixbdonlinestore@gmail.com</p>
+                    </div>
+                </div>
+
+                <!-- Support Page -->
+                <div id="support-page" class="page">
+                    <div class="content-card">
+                        <h2 data-translate="support-title">🆘 Support</h2>
+                        <p><strong data-translate="need-help">Need help?</strong></p>
+                        <p data-translate="email-support">Send us an email: <a href="mailto:aunixbdonlinestore@gmail.com" style="color: var(--primary);">aunixbdonlinestore@gmail.com</a></p>
+                        
+                        <div class="social-links">
+                            <a href="https://discord.gg/sJgNMCNh7Q" class="social-link" target="_blank" data-translate="discord-support">💬 Discord Support</a>
+                            <a href="https://t.me/aunixbdworldwide" class="social-link" target="_blank" data-translate="telegram-support">📱 Telegram Support</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About AI Page -->
+                <div id="about-ai-page" class="page">
+                    <div class="content-card">
+                        <h2 data-translate="ai-title">🤖 About Qourix AI</h2>
+                        <p data-translate="ai-intro">Meet Qourix AI, your intelligent assistant powered by advanced artificial intelligence. Designed specifically for Aunix BD customers, Qourix AI provides instant support and answers to all your questions.</p>
+                        
+                        <h3 data-translate="ai-capabilities">🚀 AI Capabilities & Features</h3>
+                        
+                        <div class="ai-capability-item">
+                            <div class="ai-capability-icon">💬</div>
+                            <div>
+                                <strong data-translate="instant-support">Instant Customer Support</strong>
+                                <p data-translate="instant-support-desc">Get immediate answers to your questions about products, orders, and services 24/7.</p>
+                            </div>
+                        </div>
+
+                        <div class="ai-capability-item">
+                            <div class="ai-capability-icon">💰</div>
+                            <div>
+                                <strong data-translate="price-info">Price Information</strong>
+                                <p data-translate="price-info-desc">Ask about current prices for Free Fire diamonds, PUBG UC, Discord Nitro, and all other products.</p>
+                            </div>
+                        </div>
+
+                        <div class="ai-capability-item">
+                            <div class="ai-capability-icon">📱</div>
+                            <div>
+                                <strong data-translate="order-assistance">Order Assistance</strong>
+                                <p data-translate="order-assistance-desc">Get step-by-step guidance on how to place orders and complete payments.</p>
+                            </div>
+                        </div>
+
+                        <div class="ai-capability-item">
+                            <div class="ai-capability-icon">🔍</div>
+                            <div>
+                                <strong data-translate="recommendations">Product Recommendations</strong>
+                                <p data-translate="recommendations-desc">Receive personalized suggestions based on your gaming preferences and needs.</p>
+                            </div>
+                        </div>
+
+                        <div class="ai-capability-item">
+                            <div class="ai-capability-icon">🌐</div>
+                            <div>
+                                <strong data-translate="multi-language">Multi-Language Support</strong>
+                                <p data-translate="multi-language-desc">Communicate in Bengali, English, Hindi, or Arabic - Qourix AI speaks your language!</p>
+                            </div>
+                        </div>
+
+                        <div class="ai-capability-item">
+                            <div class="ai-capability-icon">⚡</div>
+                            <div>
+                                <strong data-translate="quick-responses">Quick Responses</strong>
+                                <p data-translate="quick-responses-desc">Get lightning-fast responses with accurate information about Aunix BD services.</p>
+                            </div>
+                        </div>
+
+                        <h3 data-translate="creators">👑 Meet the Creators</h3>
+                        <div class="ai-capability-item">
+                            <div class="ai-capability-icon">🎬</div>
+                            <div>
+                                <strong>Mine_Gaming</strong>
+                                <p data-translate="senseiscourge-desc">The OG of Minecraft, YouTuber, coder, and developer. A 16-year-old legend with massive fan support.</p>
+                            </div>
+                        </div>
+
+                        <div class="ai-capability-item">
+                            <div class="ai-capability-icon">🤝</div>
+                            <div>
+                                <strong>Rihan Uddin</strong>
+                                <p data-translate="rihan-desc">Co-Owner of Aunix BD and Mine_Gaming's most trusted friend. A business-minded legend.</p>
+                            </div>
+                        </div>
+
+                        <p style="text-align: center; margin-top: 30px; color: var(--primary);">
+                            <strong data-translate="ai-experience">Experience the future of customer support with Qourix AI! 🚀</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crypto Mode -->
+        <div id="crypto-mode" style="display: none;">
+            <div class="crypto-redirect">
+                <h2 data-translate="crypto-mode">🔗 Crypto Mode</h2>
+                <p data-translate="crypto-redirect">Redirecting to our crypto store...</p>
+                <a href="https://aunix-bd.mysellauth.com/" class="crypto-link" target="_blank" data-translate="visit-crypto">Visit Crypto Store</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Bot Button -->
+    <button class="ai-bot-button" id="aiBotButton">
+        🤖
+    </button>
+
+    <!-- AI Bot Modal -->
+    <div class="ai-bot-modal" id="aiModal">
+        <div class="ai-bot-content">
+            <div class="ai-bot-header">
+                <button class="quick-toggle" id="quickToggle">⋮</button>
+                <h2 data-translate="ai-assistant">🤖 Qourix AI Assistant</h2>
+                <button class="close-ai-btn" id="closeAiBtn">×</button>
+            </div>
+            
+            <div id="quickQuestionDrawer" class="quick-question-drawer">
+                <h3 data-translate="quick-questions">💡 Quick Questions</h3>
+                <button class="question-card" data-question="Free Fire Diamond Prices" data-translate="ff-prices">📌 Free Fire Diamond Prices</button>
+                <button class="question-card" data-question="PUBG UC Prices" data-translate="pubg-prices">🔫 PUBG UC Prices</button>
+                <button class="question-card" data-question="Discord Nitro Prices" data-translate="discord-prices">💬 Discord Nitro Prices</button>
+                <button class="question-card" data-question="Netflix Subscription" data-translate="netflix-sub">📺 Netflix Subscription</button>
+                <button class="question-card" data-question="Who made you?" data-translate="who-made">👑 Who Made You?</button>
+                <button class="question-card" data-question="How to order" data-translate="how-order">📦 How to Order</button>
+                <button class="question-card" data-question="About Aunix BD" data-translate="about-aunix">📄 About Aunix BD</button>
+            </div>
+
+            <div class="ai-chat-area" id="aiChatArea">
+                <div class="ai-message bot">
+                    <div class="ai-message-content" id="welcome-message">
+                        🎉 Welcome to Qourix AI! I'm your official Aunix BD assistant. 
+                        <br><br>I can help you with:
+                        <br>• Product prices and details
+                        <br>• Order assistance
+                        <br>• Account information
+                        <br>• General support
+                        <br><br>Ask me anything! 😊
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-input-area">
+                <div class="ai-input-container">
+                    <input type="text" class="ai-message-input" id="aiMessageInput" 
+                           placeholder="Ask me about products, orders, or anything else...">
+                    <button class="ai-send-btn" id="aiSendBtn">→</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" data-page="home-page">
+            <span class="nav-emoji">🏠</span>
+            <div class="nav-text" data-translate="home">Home</div>
+        </div>
+        <div class="nav-item" data-page="orders-page">
+            <span class="nav-emoji">🛒</span>
+            <div class="nav-text" data-translate="orders">Orders</div>
+        </div>
+        <div class="nav-item" data-page="about-page">
+            <span class="nav-emoji">ℹ️</span>
+            <div class="nav-text" data-translate="about">About</div>
+        </div>
+        <div class="nav-item" data-page="tos-page">
+            <span class="nav-emoji">📜</span>
+            <div class="nav-text" data-translate="tos">TOS</div>
+        </div>
+        <div class="nav-item" data-page="support-page">
+            <span class="nav-emoji">🆘</span>
+            <div class="nav-text" data-translate="support">Support</div>
+        </div>
+        <div class="nav-item" data-page="about-ai-page">
+            <span class="nav-emoji">🤖</span>
+            <div class="nav-text" data-translate="ai">AI</div>
+        </div>
+    </div>
+
+    <script>
+        // Language translations
+        const translations = {
+            en: {
+                'main-title': '🔥 Aunix BD - Premium Digital Store',
+                'main-subtitle': 'Your trusted partner for gaming & digital services',
+                'themes': '🎨 Themes',
+                'theme-cyberpunk': 'Cyberpunk Neon',
+                'theme-neon-city': 'Neon City',
+                'theme-aurora': 'Aurora Borealis',
+                'theme-sunset': 'Sunset Vibes',
+                'theme-ocean': 'Ocean Depths',
+                'theme-forest': 'Forest Magic',
+                'theme-galaxy': 'Galaxy Dreams',
+                'theme-fire': 'Fire Storm',
+                'theme-black-red': 'Black Red',
+                'language': '🌐 Language',
+                'settings': '⚙️ Settings',
+                'notifications': '🔔 Notifications',
+                'sound-effects': '🎵 Sound Effects',
+                'animations': '✨ Animations',
+                'auto-dark': '🌙 Auto Dark Mode',
+                'quick-actions': '⚡ Quick Actions',
+                'clear-cache': '🗑️ Clear Cache',
+                'export-data': '📤 Export Data',
+                'reset-settings': '🔄 Reset Settings',
+                'bdt-mode-btn': '💰 BDT Mode',
+                'crypto-mode-btn': '🔗 Crypto Mode',
+                'freefire': 'Free Fire',
+                'pubg': 'PUBG UC',
+                'discord': 'Discord',
+                'minecraft': 'Minecraft',
+                'social': 'Social Media',
+                'premium': 'Aunix Premium',
+                'roblox': 'Roblox Robux',
+                'back': '← Back to Categories',
+                'cart': '🛒 Your Cart',
+                'checkout': 'Proceed to Checkout',
+                'order-history': '📋 Order History',
+                'back-cart': '← Back to Cart',
+                'checkout-title': '💳 Checkout',
+                'product-name': 'Product Name',
+                'customer-name': 'Your Name *',
+                'payment-info': '📱 Send Money to: <strong>01400378141</strong>',
+                'payment-method': 'Payment Method *',
+                'select-payment': 'Select Payment Method',
+                'payment-number': 'Payment Number *',
+                'email': 'Email *',
+                'transaction-id': 'Transaction ID *',
+                'discord-id': 'Discord ID',
+                'note': 'Note',
+                'place-order': '🚀 Place Order',
+                'about-title': 'ℹ️ About Aunix BD',
+                'about-text': 'Aunix BD is a Bangladesh-based digital service store offering instant delivery of premium subscriptions and game top-ups. We specialize in affordable, fast-access services like Discord Nitro, ChatGPT Plus, Spotify, Netflix, YouTube Premium, and Free Fire diamonds, catering especially to Bangladeshi users.',
+                'about-text2': 'Aunix BD allows secure purchases using local payment methods like bKash and Nagad, with a user-friendly interface and 24/7 support for smooth digital delivery. Aunix BD is your trusted hub for digital deals at the best prices.',
+                'join-discord': '💬 Join Discord',
+                'join-telegram': '📱 Join Telegram',
+                'tos-title': '📜 Terms of Service',
+                'effective-date': 'Effective Date:',
+                'tos-intro': 'Welcome to AUNIX BD ("we," "our," or "us"). By accessing or using our website, services, or purchasing products, you agree to these Terms of Service ("Terms").',
+                'general-terms': '1. General Terms',
+                'general-terms-text': 'By using our services, you agree to comply with these terms and all applicable laws.',
+                'products-services': '2. Products and Services',
+                'products-services-text': 'We provide digital products and services including game top-ups, subscriptions, and premium accounts.',
+                'payment-terms': '3. Payment',
+                'payment-terms-text': 'All payments must be made through approved payment methods. Prices are in BDT unless otherwise specified.',
+                'refunds': '4. Refunds and Cancellations',
+                'refunds-text': 'Digital products are non-refundable once delivered. Contact support for any issues.',
+                'prohibited': '5. Prohibited Activities',
+                'prohibited-text': 'Users may not engage in fraudulent activities, chargebacks, or misuse of services.',
+                'liability': '6. Limitation of Liability',
+                'liability-text': 'AUNIX BD is not liable for any indirect or consequential damages.',
+                'contact-info': '7. Contact Information',
+                'contact-text': 'For questions, contact us at: aunixbdonlinestore@gmail.com',
+                'support-title': '🆘 Support',
+                'need-help': 'Need help?',
+                'email-support': 'Send us an email: <a href="mailto:aunixbdonlinestore@gmail.com" style="color: var(--primary);">aunixbdonlinestore@gmail.com</a>',
+                'discord-support': '💬 Discord Support',
+                'telegram-support': '📱 Telegram Support',
+                'ai-title': '🤖 About Qourix AI',
+                'ai-intro': 'Meet Qourix AI, your intelligent assistant powered by advanced artificial intelligence. Designed specifically for Aunix BD customers, Qourix AI provides instant support and answers to all your questions.',
+                'ai-capabilities': '🚀 AI Capabilities & Features',
+                'instant-support': 'Instant Customer Support',
+                'instant-support-desc': 'Get immediate answers to your questions about products, orders, and services 24/7.',
+                'price-info': 'Price Information',
+                'price-info-desc': 'Ask about current prices for Free Fire diamonds, PUBG UC, Discord Nitro, and all other products.',
+                'order-assistance': 'Order Assistance',
+                'order-assistance-desc': 'Get step-by-step guidance on how to place orders and complete payments.',
+                'recommendations': 'Product Recommendations',
+                'recommendations-desc': 'Receive personalized suggestions based on your gaming preferences and needs.',
+                'multi-language': 'Multi-Language Support',
+                'multi-language-desc': 'Communicate in Bengali, English, Hindi, or Arabic - Qourix AI speaks your language!',
+                'quick-responses': 'Quick Responses',
+                'quick-responses-desc': 'Get lightning-fast responses with accurate information about Aunix BD services.',
+                'creators': '👑 Meet the Creators',
+                'senseiscourge-desc': 'The OG of Minecraft, YouTuber, coder, and developer. A 16-year-old legend with massive fan support.',
+                'rihan-desc': 'Co-Owner of Aunix BD and Mine_Gaming\'s most trusted friend. A business-minded legend.',
+                'ai-experience': 'Experience the future of customer support with Qourix AI! 🚀',
+                'crypto-mode': '🔗 Crypto Mode',
+                'crypto-redirect': 'Redirecting to our crypto store...',
+                'visit-crypto': 'Visit Crypto Store',
+                'ai-assistant': '🤖 Qourix AI Assistant',
+                'quick-questions': '💡 Quick Questions',
+                'ff-prices': '📌 Free Fire Diamond Prices',
+                'pubg-prices': '🔫 PUBG UC Prices',
+                'discord-prices': '💬 Discord Nitro Prices',
+                'netflix-sub': '📺 Netflix Subscription',
+                'who-made': '👑 Who Made You?',
+                'how-order': '📦 How to Order',
+                'about-aunix': '📄 About Aunix BD',
+                'home': 'Home',
+                'orders': 'Orders',
+                'about': 'About',
+                'tos': 'TOS',
+                'support': 'Support',
+                'ai': 'AI'
+            },
+            bn: {
+                'main-title': '🔥 আউনিক্স বিডি - প্রিমিয়াম ডিজিটাল স্টোর',
+                'main-subtitle': 'গেমিং এবং ডিজিটাল সেবার জন্য আপনার বিশ্বস্ত অংশীদার',
+                'themes': '🎨 থিম',
+                'theme-cyberpunk': 'সাইবারপাঙ্ক নিয়ন',
+                'theme-neon-city': 'নিয়ন সিটি',
+                'theme-aurora': 'অরোরা বোরিয়ালিস',
+                'theme-sunset': 'সূর্যাস্ত ভাইবস',
+                'theme-ocean': 'সমুদ্রের গভীরতা',
+                'theme-forest': 'বনের জাদু',
+                'theme-galaxy': 'গ্যালাক্সি স্বপ্ন',
+                'theme-fire': 'আগুনের ঝড়',
+                'theme-black-red': 'কালো লাল',
+                'language': '🌐 ভাষা',
+                'settings': '⚙️ সেটিংস',
+                'notifications': '🔔 বিজ্ঞপ্তি',
+                'sound-effects': '🎵 শব্দ প্রভাব',
+                'animations': '✨ অ্যানিমেশন',
+                'auto-dark': '🌙 অটো ডার্ক মোড',
+                'quick-actions': '⚡ দ্রুত কর্ম',
+                'clear-cache': '🗑️ ক্যাশে পরিষ্কার',
+                'export-data': '📤 ডেটা রপ্তানি',
+                'reset-settings': '🔄 সেটিংস রিসেট',
+                'bdt-mode-btn': '💰 টাকা মোড',
+                'crypto-mode-btn': '🔗 ক্রিপ্টো মোড',
+                'freefire': 'ফ্রি ফায়ার',
+                'pubg': 'পাবজি ইউসি',
+                'discord': 'ডিসকর্ড',
+                'minecraft': 'মাইনক্রাফট',
+                'social': 'সোশ্যাল মিডিয়া',
+                'premium': 'আউনিক্স প্রিমিয়াম',
+                'roblox': 'রোবলক্স রোবাক্স',
+                'back': '← ক্যাটাগরিতে ফিরে যান',
+                'cart': '🛒 আপনার কার্ট',
+                'checkout': 'চেকআউটে যান',
+                'order-history': '📋 অর্ডার ইতিহাস',
+                'back-cart': '← কার্টে ফিরে যান',
+                'checkout-title': '💳 চেকআউট',
+                'product-name': 'পণ্যের নাম',
+                'customer-name': 'আপনার নাম *',
+                'payment-info': '📱 টাকা পাঠান: <strong>01400378141</strong>',
+                'payment-method': 'পেমেন্ট পদ্ধতি *',
+                'select-payment': 'পেমেন্ট পদ্ধতি নির্বাচন করুন',
+                'payment-number': 'পেমেন্ট নম্বর *',
+                'email': 'ইমেইল *',
+                'transaction-id': 'লেনদেন আইডি *',
+                'discord-id': 'ডিসকর্ড আইডি',
+                'note': 'নোট',
+                'place-order': '🚀 অর্ডার দিন',
+                'about-title': 'ℹ️ আউনিক্স বিডি সম্পর্কে',
+                'about-text': 'আউনিক্স বিডি একটি বাংলাদেশ-ভিত্তিক ডিজিটাল সেবা স্টোর যা প্রিমিয়াম সাবস্ক্রিপশন এবং গেম টপ-আপের তাৎক্ষণিক ডেলিভারি প্রদান করে।',
+                'about-text2': 'আউনিক্স বিডি বিকাশ এবং নগদের মতো স্থানীয় পেমেন্ট পদ্ধতি ব্যবহার করে নিরাপদ কেনাকাটার সুবিধা দেয়।',
+                'join-discord': '💬 ডিসকর্ডে যোগ দিন',
+                'join-telegram': '📱 টেলিগ্রামে যোগ দিন',
+                'tos-title': '📜 সেবার শর্তাবলী',
+                'effective-date': 'কার্যকর তারিখ:',
+                'support-title': '🆘 সাহায্য',
+                'need-help': 'সাহায্য প্রয়োজন?',
+                'email-support': 'আমাদের ইমেইল করুন: <a href="mailto:aunixbdonlinestore@gmail.com" style="color: var(--primary);">aunixbdonlinestore@gmail.com</a>',
+                'discord-support': '💬 ডিসকর্ড সাহায্য',
+                'telegram-support': '📱 টেলিগ্রাম সাহায্য',
+                'ai-title': '🤖 কৌরিক্স এআই সম্পর্কে',
+                'ai-intro': 'কৌরিক্স এআই এর সাথে পরিচিত হন, আপনার বুদ্ধিমান সহায়ক যা উন্নত কৃত্রিম বুদ্ধিমত্তা দ্বারা চালিত।',
+                'ai-capabilities': '🚀 এআই ক্ষমতা এবং বৈশিষ্ট্য',
+                'instant-support': 'তাৎক্ষণিক গ্রাহক সহায়তা',
+                'instant-support-desc': '২৪/৭ পণ্য, অর্ডার এবং সেবা সম্পর্কে তাৎক্ষণিক উত্তর পান।',
+                'price-info': 'মূল্য তথ্য',
+                'price-info-desc': 'ফ্রি ফায়ার ডায়মন্ড, পাবজি ইউসি, ডিসকর্ড নাইট্রো এবং অন্যান্য পণ্যের বর্তমান দাম জানুন।',
+                'order-assistance': 'অর্ডার সহায়তা',
+                'order-assistance-desc': 'অর্ডার দেওয়া এবং পেমেন্ট সম্পূর্ণ করার জন্য ধাপে ধাপে গাইড পান।',
+                'recommendations': 'পণ্য সুপারিশ',
+                'recommendations-desc': 'আপনার গেমিং পছন্দ এবং প্রয়োজনের উপর ভিত্তি করে ব্যক্তিগত সুপারিশ পান।',
+                'multi-language': 'বহু-ভাষা সহায়তা',
+                'multi-language-desc': 'বাংলা, ইংরেজি, হিন্দি বা আরবিতে কথা বলুন - কৌরিক্স এআই আপনার ভাষা বলে!',
+                'quick-responses': 'দ্রুত প্রতিক্রিয়া',
+                'quick-responses-desc': 'আউনিক্স বিডি সেবা সম্পর্কে সঠিক তথ্য সহ বিদ্যুৎ-দ্রুত প্রতিক্রিয়া পান।',
+                'creators': '👑 নির্মাতাদের সাথে পরিচিত হন',
+                'senseiscourge-desc': 'মাইনক্রাফটের ওজি, ইউটিউবার, কোডার এবং ডেভেলপার। বিশাল ফ্যান সাপোর্ট সহ ১৬ বছর বয়সী কিংবদন্তি।',
+                'rihan-desc': 'আউনিক্স বিডির সহ-মালিক এবং সেনসেইস্কার্জের সবচেয়ে বিশ্বস্ত বন্ধু। একজন ব্যবসায়িক মানসিকতার কিংবদন্তি।',
+                'ai-experience': 'কৌরিক্স এআই এর সাথে গ্রাহক সহায়তার ভবিষ্যত অনুভব করুন! 🚀',
+                'crypto-mode': '🔗 ক্রিপ্টো মোড',
+                'crypto-redirect': 'আমাদের ক্রিপ্টো স্টোরে পুনঃনির্দেশিত হচ্ছে...',
+                'visit-crypto': 'ক্রিপ্টো স্টোর দেখুন',
+                'ai-assistant': '🤖 কৌরিক্স এআই সহায়ক',
+                'quick-questions': '💡 দ্রুত প্রশ্ন',
+                'ff-prices': '📌 ফ্রি ফায়ার ডায়মন্ডের দাম',
+                'pubg-prices': '🔫 পাবজি ইউসির দাম',
+                'discord-prices': '💬 ডিসকর্ড নাইট্রোর দাম',
+                'netflix-sub': '📺 নেটফ্লিক্স সাবস্ক্রিপশন',
+                'who-made': '👑 আপনাকে কে তৈরি করেছে?',
+                'how-order': '📦 কীভাবে অর্ডার করবেন',
+                'about-aunix': '📄 আউনিক্স বিডি সম্পর্কে',
+                'home': 'হোম',
+                'orders': 'অর্ডার',
+                'about': 'সম্পর্কে',
+                'tos': 'শর্তাবলী',
+                'support': 'সাহায্য',
+                'ai': 'এআই'
+            },
+            ar: {
+                'main-title': '🔥 أونيكس بي دي - متجر رقمي متميز',
+                'main-subtitle': 'شريكك الموثوق للألعاب والخدمات الرقمية',
+                'themes': '🎨 الثيمات',
+                'theme-cyberpunk': 'سايبربانك نيون',
+                'theme-neon-city': 'مدينة النيون',
+                'theme-aurora': 'الشفق القطبي',
+                'theme-sunset': 'أجواء الغروب',
+                'theme-ocean': 'أعماق المحيط',
+                'theme-forest': 'سحر الغابة',
+                'theme-galaxy': 'أحلام المجرة',
+                'theme-fire': 'عاصفة النار',
+                'theme-black-red': 'أس ود أحمر',
+                'language': '🌐 اللغة',
+                'settings': '⚙️ الإعدادات',
+                'notifications': '🔔 الإشعارات',
+                'sound-effects': '🎵 المؤثرات الصوتية',
+                'animations': '✨ الرسوم المتحركة',
+                'auto-dark': '🌙 الوضع المظلم التلقائي',
+                'quick-actions': '⚡ الإجراءات السريعة',
+                'clear-cache': '🗑️ مسح التخزين المؤقت',
+                'export-data': '📤 تصدير البيانات',
+                'reset-settings': '🔄 إعادة تعيين الإعدادات',
+                'bdt-mode-btn': '💰 وضع التاكا',
+                'crypto-mode-btn': '🔗 وضع العملة المشفرة',
+                'freefire': 'فري فاير',
+                'pubg': 'ببجي يو سي',
+                'discord': 'ديسكورد',
+                'minecraft': 'ماين كرافت',
+                'social': 'وسائل التواصل الاجتماعي',
+                'premium': 'أونيكس بريميوم',
+                'roblox': 'روبلوكس روباكس',
+                'back': '← العودة إلى الفئات',
+                'cart': '🛒 سلة التسوق',
+                'checkout': 'المتابعة للدفع',
+                'order-history': '📋 تاريخ الطلبات',
+                'back-cart': '← العودة إلى السلة',
+                'checkout-title': '💳 الدفع',
+                'product-name': 'اسم المنتج',
+                'customer-name': 'اسمك *',
+                'payment-info': '📱 أرسل المال إلى: <strong>01400378141</strong>',
+                'payment-method': 'طريقة الدفع *',
+                'select-payment': 'اختر طريقة الدفع',
+                'payment-number': 'رقم الدفع *',
+                'email': 'البريد الإلكتروني *',
+                'transaction-id': 'معرف المعاملة *',
+                'discord-id': 'معرف ديسكورد',
+                'note': 'ملاحظة',
+                'place-order': '🚀 تقديم الطلب',
+                'about-title': 'ℹ️ حول أونيكس بي دي',
+                'about-text': 'أونيكس بي دي هو متجر خدمات رقمية مقره بنغلاديش يقدم التسليم الفوري للاشتراكات المتميزة وشحن الألعاب.',
+                'about-text2': 'يتيح أونيكس بي دي عمليات شراء آمنة باستخدام طرق الدفع المحلية مثل بيكاش ونجد.',
+                'join-discord': '💬 انضم إلى ديسكورد',
+                'join-telegram': '📱 انضم إلى تيليجرام',
+                'tos-title': '📜 شروط الخدمة',
+                'effective-date': 'تاريخ السريان:',
+                'support-title': '🆘 الدعم',
+                'need-help': 'تحتاج مساعدة؟',
+                'email-support': 'أرسل لنا بريد إلكتروني: <a href="mailto:aunixbdonlinestore@gmail.com" style="color: var(--primary);">aunixbdonlinestore@gmail.com</a>',
+                'discord-support': '💬 دعم ديسكورد',
+                'telegram-support': '📱 دعم تيليجرام',
+                'ai-title': '🤖 حول كوريكس الذكي',
+                'ai-intro': 'تعرف على كوريكس الذكي، مساعدك الذكي المدعوم بالذكاء الاصطناعي المتقدم.',
+                'ai-capabilities': '🚀 قدرات ومميزات الذكاء الاصطناعي',
+                'instant-support': 'دعم العملاء الفوري',
+                'instant-support-desc': 'احصل على إجابات فورية لأسئلتك حول المنتجات والطلبات والخدمات على مدار الساعة.',
+                'price-info': 'معلومات الأسعار',
+                'price-info-desc': 'اسأل عن الأسعار الحالية لماسات فري فاير وببجي يو سي وديسكورد نيترو وجميع المنتجات الأخرى.',
+                'order-assistance': 'مساعدة الطلبات',
+                'order-assistance-desc': 'احصل على إرشادات خطوة بخطوة حول كيفية تقديم الطلبات وإكمال المدفوعات.',
+                'recommendations': 'توصيات المنتجات',
+                'recommendations-desc': 'احصل على اقتراحات شخصية بناءً على تفضيلاتك واحتياجاتك في الألعاب.',
+                'multi-language': 'دعم متعدد اللغات',
+                'multi-language-desc': 'تواصل بالبنغالية أو الإنجليزية أو الهندية أو العربية - كوريكس الذكي يتحدث لغتك!',
+                'quick-responses': 'استجابات سريعة',
+                'quick-responses-desc': 'احصل على استجابات سريعة البرق مع معلومات دقيقة حول خدمات أونيكس بي دي.',
+                'creators': '👑 تعرف على المبدعين',
+                'senseiscourge-desc': 'الأصلي في ماين كرافت، يوتيوبر، مبرمج ومطور. أسطورة عمرها 16 عامًا بدعم جماهيري ضخم.',
+                'rihan-desc': 'الشريك المؤسس لأونيكس بي دي وأكثر أصدقاء سينسي سكورج ثقة. أسطورة ذات عقلية تجارية.',
+                'ai-experience': 'اختبر مستقبل دعم العملاء مع كوريكس الذكي! 🚀',
+                'crypto-mode': '🔗 وضع العملة المشفرة',
+                'crypto-redirect': 'إعادة توجيه إلى متجر العملة المشفرة...',
+                'visit-crypto': 'زيارة متجر العملة المشفرة',
+                'ai-assistant': '🤖 مساعد كوريكس الذكي',
+                'quick-questions': '💡 أسئلة سريعة',
+                'ff-prices': '📌 أسعار ماسات فري فاير',
+                'pubg-prices': '🔫 أسعار ببجي يو سي',
+                'discord-prices': '💬 أسعار ديسكورد نيترو',
+                'netflix-sub': '📺 اشتراك نتفليكس',
+                'who-made': '👑 من صنعك؟',
+                'how-order': '📦 كيفية الطلب',
+                'about-aunix': '📄 حول أونيكس بي دي',
+                'home': 'الرئيسية',
+                'orders': 'الطلبات',
+                'about': 'حول',
+                'tos': 'الشروط',
+                'support': 'الدعم',
+                'ai': 'الذكي'
+            }
+        };
+
+        // Enhanced Product data with search functionality and price filtering
+        const products = {
+            freefire: {
+                title: "🔥 Free Fire",
+                items: [
+                    { name: "25 Diamonds", price: 27, category: "freefire", tags: ["cheap", "popular"] },
+                    { name: "50 Diamonds", price: 46, category: "freefire", tags: ["popular"] },
+                    { name: "100 Diamonds", price: 87, category: "freefire", tags: ["popular"] },
+                    { name: "115 Diamonds", price: 89, category: "freefire", tags: ["popular"] },
+                    { name: "240 Diamonds", price: 179, category: "freefire", tags: ["popular"] },
+                    { name: "355 Diamonds", price: 267, category: "freefire", tags: [] },
+                    { name: "480 Diamonds", price: 368, category: "freefire", tags: [] },
+                    { name: "505 Diamonds", price: 378, category: "freefire", tags: [] },
+                    { name: "610 Diamonds", price: 437, category: "freefire", tags: [] },
+                    { name: "725 Diamonds", price: 542, category: "freefire", tags: [] },
+                    { name: "850 Diamonds", price: 659, category: "freefire", tags: [] },
+                    { name: "1015 Diamonds", price: 758, category: "freefire", tags: [] },
+                    { name: "1240 Diamonds", price: 868, category: "freefire", tags: [] },
+                    { name: "2530 Diamonds", price: 1739, category: "freefire", tags: ["premium"] },
+                    { name: "5060 Diamonds", price: 3250, category: "freefire", tags: ["premium"] },
+                    { name: "10120 Diamonds", price: 6867, category: "freefire", tags: ["premium"] },
+                    { name: "Weekly Lite", price: 45, category: "freefire", tags: ["cheap", "popular"] },
+                    { name: "Weekly", price: 175, category: "freefire", tags: ["popular"] },
+                    { name: "Weekly 2x", price: 340, category: "freefire", tags: [] },
+                    { name: "Weekly 3x", price: 501, category: "freefire", tags: [] },
+                    { name: "Monthly", price: 777, category: "freefire", tags: ["premium"] },
+                    { name: "Evo Access 3 Days", price: 80, category: "freefire", tags: ["new"] },
+                    { name: "Evo Access 7 Days", price: 115, category: "freefire", tags: ["new"] },
+                    { name: "Evo Access 14 Days", price: 225, category: "freefire", tags: ["new"] },
+                    { name: "Evo Access 30 Days", price: 318, category: "freefire", tags: ["new"] }
+                ]
+            },
+            pubg: {
+                title: "🔫 PUBG UC",
+                items: [
+                    { name: "30 UC", price: 85, category: "pubg", tags: ["cheap", "popular"] },
+                    { name: "60 UC", price: 134, category: "pubg", tags: ["popular"] },
+                    { name: "120 UC", price: 270, category: "pubg", tags: ["popular"] },
+                    { name: "180 UC", price: 390, category: "pubg", tags: ["popular"] },
+                    { name: "325 UC", price: 618, category: "pubg", tags: [] },
+                    { name: "385 UC", price: 740, category: "pubg", tags: [] },
+                    { name: "660 UC", price: 1189, category: "pubg", tags: [] },
+                    { name: "720 UC", price: 1291, category: "pubg", tags: [] },
+                    { name: "985 UC", price: 1745, category: "pubg", tags: ["premium"] },
+                    { name: "1320 UC", price: 2280, category: "pubg", tags: ["premium"] }
+                ]
+            },
+            discord: {
+                title: "💬 Discord",
+                items: [
+                    { name: "Nitro Premium (3 Months)", price: 300, category: "discord", tags: ["popular", "premium"] },
+                    { name: "14x Server Boost 1 Month", price: 606.76, category: "discord", tags: ["premium"] },
+                    { name: "14x Server Boost 3 Months", price: 1490.58, category: "discord", tags: ["premium"] }
+                ]
+            },
+            minecraft: {
+                title: "⛏️ Minecraft",
+                items: [
+                    { name: "Minecraft Premium", price: 1390.88, category: "minecraft", tags: ["premium", "popular"] }
+                ]
+            },
+            social: {
+                title: "📺 Social Media",
+                items: [
+                    {
+                        name: "Netflix",
+                        emoji: "📺",
+                        variants: [
+                            { name: "Netflix 4K Plan", price: 329.84, tags: ["popular", "premium"] }
+                        ]
+                    },
+                    {
+                        name: "Crunchyroll",
+                        emoji: "🍜",
+                        variants: [
+                            { name: "Crunchyroll Shared", price: 219.89, tags: ["cheap"] },
+                            { name: "Crunchyroll Private", price: 415.36, tags: ["premium"] }
+                        ]
+                    },
+                    {
+                        name: "Canva Pro",
+                        emoji: "🎨",
+                        variants: [
+                            { name: "Canva Pro 6 Month", price: 120.94, tags: ["cheap", "popular"] }
+                        ]
+                    },
+                    {
+                        name: "YouTube Premium",
+                        emoji: "📹",
+                        variants: [
+                            { name: "YouTube Premium Family Invite", price: 122, tags: ["cheap", "popular"] },
+                            { name: "YouTube Premium Family Plan", price: 561, tags: ["premium"] },
+                            { name: "YouTube Premium Individual", price: 365, tags: ["popular"] }
+                        ]
+                    },
+                    {
+                        name: "Spotify",
+                        emoji: "🎵",
+                        variants: [
+                            { name: "Spotify 1 Month", price: 219.89, tags: ["popular"] },
+                            { name: "Spotify 3 Months", price: 486.21, tags: ["popular"] },
+                            { name: "Spotify 6 Months", price: 812.39, tags: [] },
+                            { name: "Spotify 1 Year", price: 1362.12, tags: ["premium"] }
+                        ]
+                    }
+                ]
+            },
+            premium: {
+                title: "🔐 Aunix Premium",
+                items: [
+                    { name: "Aunix Premium Account", price: 120, category: "premium", tags: ["cheap", "popular", "new"] }
+                ]
+            },
+            roblox: {
+                title: "🧱 Roblox Robux",
+                items: [
+                    { name: "40 Robux", price: 89.18, category: "roblox", tags: ["cheap"] },
+                    { name: "80 Robux", price: 156.37, category: "roblox", tags: ["popular"] },
+                    { name: "400 Robux", price: 652.35, category: "roblox", tags: ["popular"] },
+                    { name: "800 Robux", price: 1325.47, category: "roblox", tags: [] },
+                    { name: "1700 Robux", price: 2763.34, category: "roblox", tags: [] },
+                    { name: "4500 Robux", price: 8040.80, category: "roblox", tags: ["premium"] },
+                    { name: "10000 Robux", price: 13066.61, category: "roblox", tags: ["premium"] }
+                ]
+            }
+        };
+
+        // Global variables
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        let currentMode = 'bdt';
+        let currentLanguage = 'en';
+        let currentPriceFilter = 10000;
+        let activeQuickFilter = null;
+        let userProfile = JSON.parse(localStorage.getItem('userProfile')) || {
+            name: 'Guest User',
+            email: '',
+            age: '',
+            country: '',
+            favoriteGame: '',
+            avatar: 'G',
+            status: 'Welcome to Aunix BD'
+        };
+        let settings = JSON.parse(localStorage.getItem('settings')) || {
+            notifications: true,
+            sounds: true,
+            animations: true,
+            autoDark: true
+        };
+
+        // Enhanced User Profile Functions
+        function openProfileModal() {
+            const modal = document.getElementById('profileModal');
+            const form = document.getElementById('profileForm');
+            
+            // Populate form with current profile data
+            document.getElementById('profileName').value = userProfile.name;
+            document.getElementById('profileEmail').value = userProfile.email;
+            document.getElementById('profileAge').value = userProfile.age;
+            document.getElementById('profileCountry').value = userProfile.country;
+            document.getElementById('profileGame').value = userProfile.favoriteGame;
+            
+            // Set selected avatar
+            document.querySelectorAll('.avatar-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.getAttribute('data-avatar') === userProfile.avatar) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            modal.classList.add('active');
+        }
+
+        function closeProfileModal() {
+            const modal = document.getElementById('profileModal');
+            modal.classList.remove('active');
+        }
+
+        function saveProfile(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('profileName').value.trim() || 'Guest User';
+            const email = document.getElementById('profileEmail').value.trim();
+            const age = document.getElementById('profileAge').value.trim();
+            const country = document.getElementById('profileCountry').value;
+            const favoriteGame = document.getElementById('profileGame').value;
+            const selectedAvatar = document.querySelector('.avatar-option.selected');
+            const avatar = selectedAvatar ? selectedAvatar.getAttribute('data-avatar') : userProfile.avatar;
+            
+            // Update profile
+            userProfile = {
+                name: name,
+                email: email,
+                age: age,
+                country: country,
+                favoriteGame: favoriteGame,
+                avatar: avatar,
+                status: generateUserStatus(country, favoriteGame)
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+            
+            // Update UI
+            updateUserProfileDisplay();
+            
+            // Close modal
+            closeProfileModal();
+            
+            // Show success notification
+            showNotification('Profile saved successfully! 🎉', 'success');
+        }
+
+        function generateUserStatus(country, favoriteGame) {
+            let status = 'Welcome to Aunix BD';
+            
+            if (country && favoriteGame) {
+                const countryNames = {
+                    'BD': 'Bangladesh', 'IN': 'India', 'PK': 'Pakistan', 'US': 'United States',
+                    'UK': 'United Kingdom', 'CA': 'Canada', 'AU': 'Australia', 'DE': 'Germany',
+                    'FR': 'France', 'JP': 'Japan', 'KR': 'South Korea', 'CN': 'China',
+                    'BR': 'Brazil', 'MX': 'Mexico', 'RU': 'Russia', 'SA': 'Saudi Arabia',
+                    'AE': 'UAE', 'EG': 'Egypt', 'NG': 'Nigeria', 'ZA': 'South Africa'
+                };
+                status = `${favoriteGame} player from ${countryNames[country] || country}`;
+            } else if (country) {
+                status = `Gaming enthusiast from ${countryNames[country] || country}`;
+            } else if (favoriteGame) {
+                status = `${favoriteGame} player`;
+            }
+            
+            return status;
+        }
+
+        function updateUserProfileDisplay() {
+            document.getElementById('userAvatar').textContent = userProfile.avatar;
+            document.getElementById('userName').textContent = userProfile.name;
+            document.getElementById('userStatus').textContent = userProfile.status;
+            
+            // Auto-fill checkout form if profile has email
+            if (userProfile.email) {
+                const emailField = document.getElementById('customer-email');
+                if (emailField && !emailField.value) {
+                    emailField.value = userProfile.email;
+                }
+            }
+            
+            // Auto-fill customer name
+            if (userProfile.name !== 'Guest User') {
+                const nameField = document.getElementById('customer-name');
+                if (nameField && !nameField.value) {
+                    nameField.value = userProfile.name;
+                }
+            }
+        }
+
+        // Enhanced Search Functions
+        function initializeSearch() {
+            const searchBar = document.getElementById('searchBar');
+            const searchResults = document.getElementById('searchResults');
+            let searchTimeout;
+
+            searchBar.addEventListener('input', function(e) {
+                clearTimeout(searchTimeout);
+                const query = e.target.value.trim();
+                
+                if (query.length === 0) {
+                    hideSearchResults();
+                    return;
+                }
+
+                searchTimeout = setTimeout(() => {
+                    performSearch(query);
+                }, 300);
+            });
+
+            searchBar.addEventListener('focus', function() {
+                if (this.value.trim().length > 0) {
+                    performSearch(this.value.trim());
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!searchBar.contains(e.target) && !searchResults.contains(e.target)) {
+                    hideSearchResults();
+                }
+            });
+        }
+
+        function performSearch(query) {
+            const results = [];
+            const lowerQuery = query.toLowerCase();
+
+            // Search through all products
+            Object.keys(products).forEach(categoryKey => {
+                const category = products[categoryKey];
+                
+                if (categoryKey === 'social') {
+                    // Handle social media variants
+                    category.items.forEach(product => {
+                        product.variants.forEach(variant => {
+                            if (variant.name.toLowerCase().includes(lowerQuery) ||
+                                product.name.toLowerCase().includes(lowerQuery) ||
+                                categoryKey.toLowerCase().includes(lowerQuery)) {
+                                results.push({
+                                    name: variant.name,
+                                    price: variant.price,
+                                    category: categoryKey,
+                                    categoryTitle: category.title,
+                                    type: 'variant',
+                                    productIndex: category.items.indexOf(product),
+                                    variantIndex: product.variants.indexOf(variant)
+                                });
+                            }
+                        });
+                    });
+                } else {
+                    // Handle regular products
+                    category.items.forEach((product, index) => {
+                        if (product.name.toLowerCase().includes(lowerQuery) ||
+                            categoryKey.toLowerCase().includes(lowerQuery) ||
+                            category.title.toLowerCase().includes(lowerQuery)) {
+                            results.push({
+                                name: product.name,
+                                price: product.price,
+                                category: categoryKey,
+                                categoryTitle: category.title,
+                                type: 'product',
+                                index: index
+                            });
+                        }
+                    });
+                }
+            });
+
+            displaySearchResults(results);
+        }
+
+        function displaySearchResults(results) {
+            const searchResults = document.getElementById('searchResults');
+            
+            if (results.length === 0) {
+                searchResults.innerHTML = '<div class="no-results">No products found</div>';
+            } else {
+                searchResults.innerHTML = results.slice(0, 8).map(result => `
+                    <div class="search-result-item" data-category="${result.category}" data-type="${result.type}" 
+                         data-index="${result.index || result.productIndex}" data-variant-index="${result.variantIndex || ''}">
+                        <div>
+                            <div class="search-result-name">${result.name}</div>
+                            <div class="search-result-category">${result.categoryTitle}</div>
+                        </div>
+                        <div class="search-result-price">${result.price} TK</div>
+                    </div>
+                `).join('');
+            }
+            
+            searchResults.style.display = 'block';
+        }
+
+        function hideSearchResults() {
+            const searchResults = document.getElementById('searchResults');
+            searchResults.style.display = 'none';
+        }
+
+        // Enhanced Sidebar Functions
+        function updateUserStats() {
+            document.getElementById('cartCount').textContent = cart.length;
+            document.getElementById('orderCount').textContent = orders.length;
+        }
+
+        function initializeCurrencyConverter() {
+            const bdtInput = document.getElementById('bdtInput');
+            const usdResult = document.getElementById('usdResult');
+            const exchangeRate = 0.0093; // 1 BDT = 0.0093 USD (approximate)
+
+            bdtInput.addEventListener('input', function() {
+                const bdtAmount = parseFloat(this.value) || 0;
+                const usdAmount = (bdtAmount * exchangeRate).toFixed(2);
+                usdResult.textContent = `$${usdAmount} USD`;
+            });
+        }
+
+        // Enhanced Price Filter Functions
+        function initializePriceFilter() {
+            const priceRange = document.getElementById('priceRange');
+            const maxPrice = document.getElementById('maxPrice');
+            const priceFilterInfo = document.getElementById('priceFilterInfo');
+            const clearFilterBtn = document.getElementById('clearFilterBtn');
+
+            priceRange.addEventListener('input', function() {
+                currentPriceFilter = parseInt(this.value);
+                maxPrice.textContent = `${currentPriceFilter} TK`;
+                updatePriceFilterInfo();
+                applyPriceFilter();
+            });
+
+            clearFilterBtn.addEventListener('click', function() {
+                currentPriceFilter = 10000;
+                priceRange.value = 10000;
+                maxPrice.textContent = '10000 TK';
+                updatePriceFilterInfo();
+                applyPriceFilter();
+                showNotification('Price filter cleared!', 'success');
+            });
+        }
+
+        function updatePriceFilterInfo() {
+            const priceFilterInfo = document.getElementById('priceFilterInfo');
+            if (currentPriceFilter >= 10000) {
+                priceFilterInfo.textContent = 'Showing all products';
+            } else {
+                priceFilterInfo.textContent = `Showing products under ${currentPriceFilter} TK`;
+            }
+        }
+
+        function applyPriceFilter() {
+            // Apply filter on home page categories
+            if (document.getElementById('home-page').classList.contains('active')) {
+                filterCategoriesByPrice();
+            }
+            
+            // Apply filter on products page
+            if (document.getElementById('products-page').classList.contains('active')) {
+                filterProductsByPrice();
+            }
+        }
+
+        function filterCategoriesByPrice() {
+            const categoryCards = document.querySelectorAll('.category-card');
+            const filterStatus = document.getElementById('filterStatus');
+            let visibleCategories = 0;
+
+            categoryCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                const hasAffordableProducts = checkCategoryHasAffordableProducts(category);
+                
+                if (hasAffordableProducts) {
+                    card.style.display = 'flex';
+                    card.style.opacity = '1';
+                    visibleCategories++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update filter status
+            if (currentPriceFilter < 10000) {
+                filterStatus.classList.remove('hidden');
+                if (visibleCategories === 0) {
+                    filterStatus.textContent = `No categories have products under ${currentPriceFilter} TK`;
+                } else {
+                    filterStatus.textContent = `Showing ${visibleCategories} categories with products under ${currentPriceFilter} TK`;
+                }
+            } else {
+                filterStatus.classList.add('hidden');
+            }
+        }
+
+        function checkCategoryHasAffordableProducts(category) {
+            const categoryData = products[category];
+            if (!categoryData) return false;
+
+            if (category === 'social') {
+                return categoryData.items.some(product => 
+                    product.variants.some(variant => variant.price <= currentPriceFilter)
+                );
+            } else {
+                return categoryData.items.some(product => product.price <= currentPriceFilter);
+            }
+        }
+
+        function filterProductsByPrice() {
+            const productCards = document.querySelectorAll('.product-card');
+            const productFilterStatus = document.getElementById('productFilterStatus');
+            let visibleProducts = 0;
+
+            productCards.forEach(card => {
+                const priceElement = card.querySelector('.product-price');
+                if (!priceElement) return;
+
+                const priceText = priceElement.textContent;
+                let price;
+
+                // Handle "From X TK" format for social media products
+                if (priceText.includes('From')) {
+                    price = parseFloat(priceText.replace(/[^\d.]/g, ''));
+                } else {
+                    price = parseFloat(priceText.replace(/[^\d.]/g, ''));
+                }
+                
+                if (price <= currentPriceFilter) {
+                    card.classList.remove('filtered-out');
+                    visibleProducts++;
+                } else {
+                    card.classList.add('filtered-out');
+                }
+            });
+
+            // Update filter status
+            if (currentPriceFilter < 10000) {
+                productFilterStatus.classList.remove('hidden');
+                if (visibleProducts === 0) {
+                    productFilterStatus.textContent = `No products found under ${currentPriceFilter} TK`;
+                } else {
+                    productFilterStatus.textContent = `Showing ${visibleProducts} products under ${currentPriceFilter} TK`;
+                }
+            } else {
+                productFilterStatus.classList.add('hidden');
+            }
+        }
+
+        function handleQuickLinks() {
+            document.querySelectorAll('.quick-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const action = this.getAttribute('data-action');
+                    
+                    // Remove active class from all quick links
+                    document.querySelectorAll('.quick-link').forEach(l => l.classList.remove('active'));
+                    
+                    if (activeQuickFilter === action) {
+                        // If clicking the same filter, clear it
+                        activeQuickFilter = null;
+                        showNotification('Filter cleared!', 'success');
+                    } else {
+                        // Apply new filter
+                        activeQuickFilter = action;
+                        this.classList.add('active');
+                        showNotification(`Showing ${action} products!`, 'success');
+                    }
+                    
+                    filterProductsByTag(activeQuickFilter);
+                });
+            });
+        }
+
+        function filterProductsByTag(tag) {
+            showPage('home-page');
+            
+            setTimeout(() => {
+                const categoryCards = document.querySelectorAll('.category-card');
+                
+                if (!tag) {
+                    // Clear all filters
+                    categoryCards.forEach(card => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'scale(1)';
+                        card.style.borderColor = '';
+                    });
+                    return;
+                }
+                
+                categoryCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    const hasTaggedProducts = products[category] && products[category].items.some(item => 
+                        item.tags && item.tags.includes(tag)
+                    );
+                    
+                    if (hasTaggedProducts) {
+                        card.style.opacity = '1';
+                        card.style.transform = 'scale(1.05)';
+                        card.style.borderColor = 'var(--primary)';
+                    } else {
+                        card.style.opacity = '0.5';
+                        card.style.transform = 'scale(0.95)';
+                    }
+                });
+            }, 100);
+        }
+
+        function shareStore() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Aunix BD - Premium Digital Store',
+                    text: 'Check out this amazing digital store for gaming and premium services!',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                navigator.clipboard.writeText(window.location.href);
+                showNotification('Store link copied to clipboard!', 'success');
+            }
+        }
+
+        function sendFeedback() {
+            const feedback = prompt('Please share your feedback about Aunix BD:');
+            if (feedback && feedback.trim()) {
+                // In a real app, this would send to a server
+                showNotification('Thank you for your feedback!', 'success');
+                console.log('User feedback:', feedback);
+            }
+        }
+
+        // Sidebar Functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const toggle = document.getElementById('sidebarToggle');
+            
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const toggle = document.getElementById('sidebarToggle');
+            
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            toggle.classList.remove('active');
+        }
+
+        // Theme Functions
+        function changeTheme(theme) {
+            document.body.className = `theme-${theme}`;
+            localStorage.setItem('theme', theme);
+            showNotification(`${theme.charAt(0).toUpperCase() + theme.slice(1)} theme activated!`, 'success');
+            updateThemeColors();
+        }
+
+        function updateThemeColors() {
+            const themeColors = document.querySelectorAll('.theme-color');
+            themeColors.forEach(color => {
+                const style = color.getAttribute('style');
+                if (style) {
+                    color.style.cssText = style;
+                }
+            });
+        }
+
+        // Language Functions
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            
+            const langOptions = document.querySelectorAll('.lang-option');
+            langOptions.forEach(option => option.classList.remove('active'));
+            document.querySelector(`[data-lang="${lang}"]`).classList.add('active');
+            
+            updateLanguage();
+            showNotification('Language changed!', 'success');
+        }
+
+        function updateLanguage() {
+            const elements = document.querySelectorAll('[data-translate]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                    if (element.tagName === 'INPUT' && element.type === 'submit') {
+                        element.value = translations[currentLanguage][key];
+                    } else {
+                        element.innerHTML = translations[currentLanguage][key];
+                    }
+                }
+            });
+
+            // Update specific elements
+            const titleElement = document.getElementById('main-title');
+            const subtitleElement = document.getElementById('main-subtitle');
+            const welcomeMessage = document.getElementById('welcome-message');
+
+            if (titleElement && translations[currentLanguage]['main-title']) {
+                titleElement.textContent = translations[currentLanguage]['main-title'];
+            }
+            if (subtitleElement && translations[currentLanguage]['main-subtitle']) {
+                subtitleElement.textContent = translations[currentLanguage]['main-subtitle'];
+            }
+
+            // Update AI welcome message
+            if (welcomeMessage) {
+                const welcomeTexts = {
+                    en: '🎉 Welcome to Qourix AI! I\'m your official Aunix BD assistant. <br><br>I can help you with:<br>• Product prices and details<br>• Order assistance<br>• Account information<br>• General support<br><br>Ask me anything! 😊',
+                    bn: '🎉 কৌরিক্স এআই তে স্বাগতম! আমি আপনার অফিসিয়াল আউনিক্স বিডি সহায়ক। <br><br>আমি আপনাকে সাহায্য করতে পারি:<br>• পণ্যের দাম এবং বিবরণ<br>• অর্ডার সহায়তা<br>• অ্যাকাউন্ট তথ্য<br>• সাধারণ সহায়তা<br><br>যেকোনো কিছু জিজ্ঞাসা করুন! 😊',
+                    ar: '🎉 مرحباً بك في كوريكس الذكي! أنا مساعدك الرسمي في أونيكس بي دي. <br><br>يمكنني مساعدتك في:<br>• أسعار وتفاصيل المنتجات<br>• مساعدة الطلبات<br>• معلومات الحساب<br>• الدعم العام<br><br>اسأل عن أي شيء! 😊'
+                };
+                welcomeMessage.innerHTML = welcomeTexts[currentLanguage] || welcomeTexts.en;
+            }
+        }
+
+        // Settings Functions
+        function toggleSetting(element, setting) {
+            element.classList.toggle('active');
+            settings[setting] = element.classList.contains('active');
+            localStorage.setItem('settings', JSON.stringify(settings));
+            
+            showNotification(`${setting} ${settings[setting] ? 'enabled' : 'disabled'}!`, 'success');
+        }
+
+        // Quick Actions
+        function clearCache() {
+            localStorage.clear();
+            showNotification('Cache cleared successfully!', 'success');
+            setTimeout(() => location.reload(), 1000);
+        }
+
+        function exportData() {
+            const data = {
+                cart: cart,
+                orders: orders,
+                settings: settings,
+                language: currentLanguage,
+                userProfile: userProfile
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'aunix-bd-data.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('Data exported successfully!', 'success');
+        }
+
+        function resetSettings() {
+            settings = {
+                notifications: true,
+                sounds: false,
+                animations: true,
+                autoDark: false
+            };
+            localStorage.setItem('settings', JSON.stringify(settings));
+            
+            // Reset toggle switches
+            const toggles = document.querySelectorAll('.toggle-switch');
+            toggles.forEach((toggle, index) => {
+                const settingKeys = ['notifications', 'sounds', 'animations', 'autoDark'];
+                if (settings[settingKeys[index]]) {
+                    toggle.classList.add('active');
+                } else {
+                    toggle.classList.remove('active');
+                }
+            });
+            
+            showNotification('Settings reset to default!', 'success');
+        }
+
+        // Notification System
+        function showNotification(message, type = 'success') {
+            if (!settings.notifications) return;
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Mode Functions
+        function switchMode(mode) {
+            currentMode = mode;
+            const bdtMode = document.getElementById('bdt-mode');
+            const cryptoMode = document.getElementById('crypto-mode');
+            const modeBtns = document.querySelectorAll('.mode-btn');
+
+            modeBtns.forEach(btn => btn.classList.remove('active'));
+            
+            if (mode === 'bdt') {
+                bdtMode.style.display = 'block';
+                cryptoMode.style.display = 'none';
+                modeBtns[0].classList.add('active');
+                showPage('home-page');
+            } else {
+                bdtMode.style.display = 'none';
+                cryptoMode.style.display = 'block';
+                modeBtns[1].classList.add('active');
+                setTimeout(() => {
+                    window.open('https://aunix-bd.mysellauth.com/', '_blank');
+                }, 1500);
+            }
+        }
+
+        // Enhanced Page Navigation with smooth transitions
+        function showPage(pageId) {
+            if (currentMode !== 'bdt') return;
+            
+            const pages = document.querySelectorAll('.page');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            // Hide all pages with fade out
+            pages.forEach(page => {
+                if (page.classList.contains('active')) {
+                    page.style.opacity = '0';
+                    page.style.transform = 'translateY(20px) scale(0.98)';
+                    setTimeout(() => {
+                        page.classList.remove('active');
+                    }, 150);
+                }
+            });
+            
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            // Show the target page with fade in
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                setTimeout(() => {
+                    targetPage.classList.add('active');
+                    setTimeout(() => {
+                        targetPage.style.opacity = '1';
+                        targetPage.style.transform = 'translateY(0) scale(1)';
+                    }, 50);
+                }, 200);
+            }
+            
+            // Update nav active state
+            const navMap = {
+                'home-page': 0,
+                'orders-page': 1,
+                'about-page': 2,
+                'tos-page': 3,
+                'support-page': 4,
+                'about-ai-page': 5
+            };
+            
+            if (navMap[pageId] !== undefined) {
+                navItems[navMap[pageId]].classList.add('active');
+            }
+            
+            if (pageId === 'orders-page') {
+                updateCartDisplay();
+                updateOrderHistory();
+            }
+
+            // Apply price filter when showing pages
+            if (pageId === 'home-page' || pageId === 'products-page') {
+                setTimeout(() => {
+                    applyPriceFilter();
+                }, 300);
+            }
+
+            // Close sidebar if open
+            closeSidebar();
+            hideSearchResults();
+        }
+
+        // Enhanced Product Functions with variants support and Add to Cart buttons
+        function showProducts(category) {
+            const categoryData = products[category];
+            if (!categoryData) return;
+            
+            document.getElementById('category-title').textContent = categoryData.title;
+            const productGrid = document.getElementById('product-grid');
+            
+            productGrid.innerHTML = '';
+            
+            if (category === 'social') {
+                // Special handling for social media products with variants
+                categoryData.items.forEach((product, index) => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    
+                    const lowestPrice = Math.min(...product.variants.map(v => v.price));
+                    const hasMultipleVariants = product.variants.length > 1;
+                    
+                    productCard.innerHTML = `
+                        <div class="product-name">${product.emoji} ${product.name}</div>
+                        <div class="product-price">From ${lowestPrice} TK</div>
+                        ${!hasMultipleVariants ? `<button class="single-product-cart" data-variant-category="social" data-variant-product="${index}" data-variant-index="0">🛒 Add to Cart</button>` : ''}
+                        ${hasMultipleVariants ? `<button class="see-more-btn" data-product-index="${index}">See ${product.variants.length} Options</button>` : ''}
+                        <div class="product-variants" id="variants-${index}">
+                            ${product.variants.map((variant, vIndex) => `
+                                <div class="variant-item" data-variant-category="social" data-variant-product="${index}" data-variant-index="${vIndex}">
+                                    <span class="variant-name">${variant.name}</span>
+                                    <span class="variant-price">${variant.price} TK</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    productGrid.appendChild(productCard);
+                });
+            } else {
+                // Regular products for other categories
+                categoryData.items.forEach((product, index) => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.innerHTML = `
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">${product.price} TK</div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" data-action="decrease" data-category="${category}" data-index="${index}">-</button>
+                            <span class="qty-display" id="qty-${category}-${index}">1</span>
+                            <button class="qty-btn" data-action="increase" data-category="${category}" data-index="${index}">+</button>
+                        </div>
+                        <button class="add-to-cart" data-category="${category}" data-index="${index}">
+                            🛒 Add to Cart
+                        </button>
+                    `;
+                    productGrid.appendChild(productCard);
+                });
+            }
+            
+            showPage('products-page');
+        }
+
+        function toggleVariants(productIndex) {
+            const variantsContainer = document.getElementById(`variants-${productIndex}`);
+            const seeMoreBtn = document.querySelector(`[data-product-index="${productIndex}"]`);
+            
+            if (variantsContainer.classList.contains('expanded')) {
+                variantsContainer.classList.remove('expanded');
+                seeMoreBtn.textContent = `See ${products.social.items[productIndex].variants.length} Options`;
+            } else {
+                variantsContainer.classList.add('expanded');
+                seeMoreBtn.textContent = 'Show Less';
+                
+                // Animate variants
+                const variants = variantsContainer.querySelectorAll('.variant-item');
+                variants.forEach((variant, index) => {
+                    variant.style.animationDelay = `${index * 0.1}s`;
+                });
+            }
+        }
+
+        function addVariantToCart(productIndex, variantIndex) {
+            const product = products.social.items[productIndex];
+            const variant = product.variants[variantIndex];
+            
+            const cartItem = {
+                name: variant.name,
+                price: variant.price,
+                quantity: 1,
+                category: 'social',
+                total: variant.price
+            };
+            
+            const existingIndex = cart.findIndex(item => item.name === cartItem.name);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+                cart[existingIndex].total = cart[existingIndex].price * cart[existingIndex].quantity;
+            } else {
+                cart.push(cartItem);
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateUserStats();
+            showNotification('Item added to cart!', 'success');
+        }
+
+        function changeQuantity(index, change, category) {
+            const qtyElement = document.getElementById(`qty-${category}-${index}`);
+            if (qtyElement) {
+                let currentQty = parseInt(qtyElement.textContent);
+                currentQty = Math.max(1, currentQty + change);
+                qtyElement.textContent = currentQty;
+            }
+        }
+
+        function addToCart(category, index) {
+            const product = products[category].items[index];
+            const qtyElement = document.getElementById(`qty-${category}-${index}`);
+            const quantity = qtyElement ? parseInt(qtyElement.textContent) : 1;
+            
+            const cartItem = {
+                name: product.name,
+                price: product.price,
+                quantity: quantity,
+                category: product.category,
+                total: product.price * quantity
+            };
+            
+            const existingIndex = cart.findIndex(item => item.name === cartItem.name);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += quantity;
+                cart[existingIndex].total = cart[existingIndex].price * cart[existingIndex].quantity;
+            } else {
+                cart.push(cartItem);
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateUserStats();
+            showNotification('Item added to cart!', 'success');
+        }
+
+        // Cart Functions
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cart-items');
+            if (!cartItems) return;
+            
+            cartItems.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; padding: 40px; color: var(--text-secondary);">Your cart is empty</p>';
+                return;
+            }
+            
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div>
+                        <div><strong>${item.name}</strong></div>
+                        <div>Quantity: ${item.quantity} | Total: ${item.total} TK</div>
+                    </div>
+                    <button class="remove-btn" data-index="${index}">Remove</button>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            updateUserStats();
+            showNotification('Item removed from cart!', 'warning');
+        }
+
+        function showCheckout() {
+            if (cart.length === 0) {
+                showNotification('Your cart is empty!', 'error');
+                return;
+            }
+            
+            const productNames = cart.map(item => `${item.name} (${item.quantity}x)`).join(', ');
+            const productNameField = document.getElementById('product-name');
+            if (productNameField) {
+                productNameField.value = productNames;
+            }
+            
+            showExtraFields();
+            showPage('checkout-page');
+        }
+
+        function showExtraFields() {
+            const extraFields = document.getElementById('extra-fields');
+            if (!extraFields) return;
+            
+            extraFields.innerHTML = '';
+            
+            const categories = [...new Set(cart.map(item => item.category))];
+            
+            categories.forEach(category => {
+                switch(category) {
+                    case 'freefire':
+                        extraFields.innerHTML += `
+                            <div class="form-group">
+                                <label>Free Fire UID *</label>
+                                <input type="text" name="Free Fire UID" id="freefire-uid" required>
+                            </div>
+                        `;
+                        break;
+                    case 'discord':
+                        extraFields.innerHTML += `
+                            <div class="form-group">
+                                <label>Discord Username *</label>
+                                <input type="text" name="Discord Username" id="discord-username" required>
+                            </div>
+                        `;
+                        if (cart.some(item => item.name.includes('Server Boost'))) {
+                            extraFields.innerHTML += `
+                                <div class="form-group">
+                                    <label>Server Invite Link *</label>
+                                    <input type="text" name="Server Invite Link" id="server-invite" required>
+                                </div>
+                            `;
+                        }
+                        break;
+                    case 'minecraft':
+                        extraFields.innerHTML += `
+                            <div class="form-group">
+                                <label>Discord Username *</label>
+                                <input type="text" name="Minecraft Discord" id="minecraft-discord" required>
+                            </div>
+                            <div class="form-group">
+                                <label>In-Game Name *</label>
+                                <input type="text" name="Minecraft IGN" id="minecraft-ign" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Your Name *</label>
+                                <input type="text" name="Minecraft Name" id="minecraft-name" required>
+                            </div>
+                        `;
+                        break;
+                    case 'social':
+                        if (cart.some(item => item.name.includes('YouTube Premium'))) {
+                            extraFields.innerHTML += `
+                                <div class="form-group">
+                                    <label>Password *</label>
+                                    <input type="password" name="YouTube Password" id="youtube-password" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Discord Username *</label>
+                                    <input type="text" name="YouTube Discord" id="youtube-discord" required>
+                                </div>
+                            `;
+                        }
+                        if (cart.some(item => item.name.includes('Spotify'))) {
+                            extraFields.innerHTML += `
+                                <div class="form-group">
+                                    <label>Spotify Email *</label>
+                                    <input type="email" name="Spotify Email" id="spotify-email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Spotify Password *</label>
+                                    <input type="password" name="Spotify Password" id="spotify-password" required>
+                                </div>
+                            `;
+                        }
+                        if (cart.some(item => item.name.includes('Canva Pro 6 Month'))) {
+                            extraFields.innerHTML += `
+                                <div class="form-group">
+                                    <label>Canva Email *</label>
+                                    <input type="email" name="Canva Email" id="canva-email" required>
+                                </div>
+                            `;
+                        }
+                        break;
+                    case 'pubg':
+                        extraFields.innerHTML += `
+                            <div class="form-group">
+                                <label>PUBG Player ID *</label>
+                                <input type="text" name="PUBG Player ID" id="pubg-id" required>
+                            </div>
+                        `;
+                        break;
+                    case 'roblox':
+                        extraFields.innerHTML += `
+                            <div class="form-group">
+                                <label>Roblox Username *</label>
+                                <input type="text" name="Roblox Username" id="roblox-username" required>
+                            </div>
+                        `;
+                        break;
+                }
+            });
+        }
+
+        function updateOrderHistory() {
+            const orderHistory = document.getElementById('order-history');
+            if (!orderHistory) return;
+            
+            orderHistory.innerHTML = '';
+            
+            if (orders.length === 0) {
+                orderHistory.innerHTML = '<p style="text-align: center; padding: 40px; color: var(--text-secondary);">No orders yet</p>';
+                return;
+            }
+            
+            orders.forEach((order, index) => {
+                const orderItem = document.createElement('div');
+                orderItem.className = 'cart-item';
+                orderItem.innerHTML = `
+                    <div>
+                        <div><strong>Order #${index + 1}</strong></div>
+                        <div>${order.productName}</div>
+                        <div>Total: ${order.total} TK</div>
+                        <div>Date: ${order.date}</div>
+                    </div>
+                `;
+                orderHistory.appendChild(orderItem);
+            });
+        }
+
+        // AI Bot Functions
+        function toggleQuickQuestions() {
+            const drawer = document.getElementById("quickQuestionDrawer");
+            if (drawer) {
+                drawer.style.display = drawer.style.display === "block" ? "none" : "block";
+            }
+        }
+
+        function sendPredefinedAI(message) {
+            const input = document.getElementById('aiMessageInput');
+            if (input) {
+                input.value = message;
+                sendAIMessage();
+            }
+        }
+
+        function openAIBot() {
+            const modal = document.getElementById('aiModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 50);
+                const input = document.getElementById('aiMessageInput');
+                if (input) {
+                    input.focus();
+                }
+            }
+        }
+
+        function closeAIBot() {
+            const modal = document.getElementById('aiModal');
+            if (modal) {
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 500);
+            }
+        }
+
+        function sendAIMessage() {
+            const input = document.getElementById('aiMessageInput');
+            if (!input) return;
+            
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addAIMessage('user', message);
+            input.value = '';
+            
+            addAIMessage('bot', '<div class="loading"></div>');
+            
+            setTimeout(() => {
+                const chatArea = document.getElementById('aiChatArea');
+                if (chatArea) {
+                    const lastMessage = chatArea.lastElementChild;
+                    if (lastMessage && lastMessage.querySelector('.loading')) {
+                        chatArea.removeChild(lastMessage);
+                    }
+                    
+                    const response = getAIResponse(message);
+                    addAIMessage('bot', response);
+                }
+            }, 1000 + Math.random() * 2000);
+        }
+
+        function addAIMessage(type, content) {
+            const chatArea = document.getElementById('aiChatArea');
+            if (!chatArea) return;
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `ai-message ${type}`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'ai-message-content';
+            contentDiv.innerHTML = content;
+            
+            messageDiv.appendChild(contentDiv);
+            chatArea.appendChild(messageDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function getAIResponse(message) {
+            const lowerMessage = message.toLowerCase();
+
+            const responses = {
+                en: {
+                    creators: `<strong>👑 The Creators of Qourix AI</strong><br><br>
+                              <strong>📢 Mine_Gaming</strong> - The OG Of Minecraft, The OG YouTuber<br>
+                              <a href="https://youtube.com/@senseiscourge?si=8bXLGBDjRVSZaFt3" style="color: var(--primary);">YouTube Channel</a><br><br>
+                              <strong>🤝 Rihan Uddin</strong> - Co-Owner of Aunix BD and most trusted friend<br>
+                              <a href="https://www.facebook.com/share/1F9nFH6amT/" style="color: var(--primary);">Facebook Profile</a><br><br>
+                              Both are business-minded legends who created this amazing AI assistant! ✨`,
+                    freefire: `🔥 <strong>Free Fire Diamonds</strong> - Instant delivery<br><br>
+                              Available from 25 diamonds (29 TK) to 10,120 diamonds (6,850 TK)<br>
+                              Also includes Weekly and Monthly passes!<br><br>
+                              📱 Ready to order? Check out our Free Fire section!`,
+                    pubg: `🔫 <strong>PUBG UC</strong> - Delivered quickly<br><br>
+                          Available from 30 UC (75 TK) to 1,320 UC (2,209 TK)<br><br>
+                          📱 Visit our PUBG section to place an order!`,
+                    discord: `💬 <strong>Discord Nitro & Boosts</strong><br><br>
+                             • Nitro Basic - 305 TK<br>
+                             • Nitro Premium - 427 TK<br>
+                             • Server Boosts available too!<br><br>
+                             📱 Check out our Discord section!`,
+                    netflix: `📺 <strong>Netflix Plans:</strong><br><br>
+                             • Netflix 4K Plan - 329.84 TK<br>
+                             • Delivered instantly with premium access.<br><br>
+                             Need help ordering? Just ask!`,
+                    spotify: `🎵 <strong>Spotify Premium</strong><br><br>
+                             • 1 Month - 219.89 TK<br>
+                             • 3 Months - 486.21 TK<br>
+                             • 6 Months - 812.39 TK<br>
+                             • 1 Year - 1362.12 TK<br><br>
+                             💡 Available for both individual and shared plans.`,
+                    minecraft: `⛏️ <strong>Minecraft Premium</strong><br><br>
+                               • Only 1390.88 TK<br>
+                               • Lifetime access with full support<br>
+                               🔐 Secure and verified accounts!`,
+                    order: `📱 <strong>How to Place an Order:</strong><br><br>
+                           1. Browse products and add to cart<br>
+                           2. Go to cart and proceed to checkout<br>
+                           3. Fill in your details<br>
+                           4. Make payment to 01400378141<br>
+                           5. Submit transaction ID<br>
+                           6. Receive your product!<br><br>
+                           Need help? I'm here! 😊`,
+                    about: `🏢 <strong>About Aunix BD</strong><br><br>
+                           Aunix BD is Bangladesh's premier digital service store offering instant delivery of premium subscriptions and game top-ups. We specialize in affordable, fast-access services like Discord Nitro, Netflix, Spotify, YouTube Premium, and Free Fire diamonds.<br><br>
+                           💳 We accept bKash, Nagad, and Rocket payments<br>
+                           ⚡ Instant delivery guaranteed<br>
+                           🛡️ 100% secure transactions<br>
+                           📞 24/7 customer support`,
+                    default: [
+                        "I'm here to help with Aunix BD! Ask me about products, prices, or orders! 😊",
+                        "Hi! I can help you with Free Fire, PUBG, Discord Nitro, and more. What do you need? 🎮",
+                        "Welcome! I'm Qourix AI, your Aunix BD assistant. How can I help you today? ✨",
+                        "Hello! Ask me about our digital products, prices, or how to place orders! 🤖"
+                    ]
+                },
+                bn: {
+                    creators: `<strong>👑 কৌরিক্স এআই এর নির্মাতারা</strong><br><br>
+                              <strong>📢 সেনসেইস্কার্জ</strong> - মাইনক্রাফটের ওজি, ওজি ইউটিউবার<br>
+                              <a href="https://youtube.com/@senseiscourge?si=8bXLGBDjRVSZaFt3" style="color: var(--primary);">ইউটিউব চ্যানেল</a><br><br>
+                              <strong>🤝 রিহান উদ্দিন</strong> - আউনিক্স বিডির সহ-মালিক এবং সবচেয়ে বিশ্বস্ত বন্ধু<br>
+                              <a href="https://www.facebook.com/share/1F9nFH6amT/" style="color: var(--primary);">ফেসবুক প্রোফাইল</a><br><br>
+                              দুজনেই ব্যবসায়িক মানসিকতার কিংবদন্তি যারা এই অসাধারণ এআই সহায়ক তৈরি করেছেন! ✨`,
+                    freefire: `🔥 <strong>ফ্রি ফায়ার ডায়মন্ড</strong> - তাৎক্ষণিক ডেলিভারি<br><br>
+                              ২৫ ডায়মন্ড (২৯ টাকা) থেকে ১০,১২০ ডায়মন্ড (৬,৮৫০ টাকা) পর্যন্ত উপলব্ধ<br>
+                              সাপ্তাহিক এবং মাসিক পাসও অন্তর্ভুক্ত!<br><br>
+                              📱 অর্ডার করতে প্রস্তুত? আমাদের ফ্রি ফায়ার বিভাগ দেখুন!`,
+                    pubg: `🔫 <strong>পাবজি ইউসি</strong> - দ্রুত ডেলিভারি<br><br>
+                          ৩০ ইউসি (৭৫ টাকা) থেকে ১,৩২০ ইউসি (২,২০৯ টাকা) পর্যন্ত উপলব্ধ<br><br>
+                          📱 অর্ডার দিতে আমাদের পাবজি বিভাগে যান!`,
+                    discord: `💬 <strong>ডিসকর্ড নাইট্রো এবং বুস্ট</strong><br><br>
+                             • নাইট্রো বেসিক - ৩০৫ টাকা<br>
+                             • নাইট্রো প্রিমিয়াম - ৪২৭ টাকা<br>
+                             • সার্ভার বুস্টও উপলব্ধ!<br><br>
+                             📱 আমাদের ডিসকর্ড বিভাগ দেখুন!`,
+                    order: `📱 <strong>কীভাবে অর্ডার করবেন:</strong><br><br>
+                           ১. পণ্য ব্রাউজ করুন এবং কার্টে যোগ করুন<br>
+                           ২. কার্টে গিয়ে চেকআউটে যান<br>
+                           ৩. আপনার বিবরণ পূরণ করুন<br>
+                           ৪. ০১৪০০৩৭৮১৪১ নম্বরে পেমেন্ট করুন<br>
+                           ৫. লেনদেন আইডি জমা দিন<br>
+                           ৬. আপনার পণ্য পান!<br><br>
+                           সাহায্য প্রয়োজন? আমি এখানে আছি! 😊`,
+                    default: [
+                        "আমি আউনিক্স বিডির সাহায্যের জন্য এখানে আছি! পণ্য, দাম বা অর্ডার সম্পর্কে জিজ্ঞাসা করুন! 😊",
+                        "হাই! আমি ফ্রি ফায়ার, পাবজি, ডিসকর্ড নাইট্রো এবং আরও অনেক কিছুতে সাহায্য করতে পারি। আপনার কী প্রয়োজন? 🎮",
+                        "স্বাগতম! আমি কৌরিক্স এআই, আপনার আউনিক্স বিডি সহায়ক। আজ আমি কীভাবে সাহায্য করতে পারি? ✨"
+                    ]
+                },
+                ar: {
+                    creators: `<strong>👑 مبدعو كوريكس الذكي</strong><br><br>
+                              <strong>📢 سينسي سكورج</strong> - الأصلي في ماين كرافت، يوتيوبر أصلي<br>
+                              <a href="https://youtube.com/@senseiscourge?si=8bXLGBDjRVSZaFt3" style="color: var(--primary);">قناة يوتيوب</a><br><br>
+                              <strong>🤝 ريهان الدين</strong> - الشريك المؤسس لأونيكس بي دي والصديق الأكثر ثقة<br>
+                              <a href="https://www.facebook.com/share/1F9nFH6amT/" style="color: var(--primary);">ملف فيسبوك</a><br><br>
+                              كلاهما أساطير ذات عقلية تجارية أنشأوا هذا المساعد الذكي المذهل! ✨`,
+                    freefire: `🔥 <strong>ماسات فري فاير</strong> - تسليم فوري<br><br>
+                              متاح من 25 ماسة (29 تاكا) إلى 10,120 ماسة (6,850 تاكا)<br>
+                              يشمل أيضاً الباسات الأسبوعية والشهرية!<br><br>
+                              📱 مستعد للطلب؟ تحقق من قسم فري فاير!`,
+                    pubg: `🔫 <strong>ببجي يو سي</strong> - تسليم سريع<br><br>
+                          متاح من 30 يو سي (75 تاكا) إلى 1,320 يو سي (2,209 تاكا)<br><br>
+                          📱 زر قسم ببجي لتقديم طلب!`,
+                    discord: `💬 <strong>ديسكورد نيترو وبوستات</strong><br><br>
+                             • نيترو بيسك - 305 تاكا<br>
+                             • نيترو بريميوم - 427 تاكا<br>
+                             • بوستات السيرفر متاحة أيضاً!<br><br>
+                             📱 تحقق من قسم ديسكورد!`,
+                    order: `📱 <strong>كيفية تقديم طلب:</strong><br><br>
+                           1. تصفح المنتجات وأضف إلى السلة<br>
+                           2. اذهب إلى السلة وتابع للدفع<br>
+                           3. املأ تفاصيلك<br>
+                           4. ادفع إلى 01400378141<br>
+                           5. أرسل معرف المعاملة<br>
+                           6. احصل على منتجك!<br><br>
+                           تحتاج مساعدة؟ أنا هنا! 😊`,
+                    default: [
+                        "أنا هنا للمساعدة مع أونيكس بي دي! اسأل عن المنتجات أو الأسعار أو الطلبات! 😊",
+                        "مرحباً! يمكنني مساعدتك مع فري فاير وببجي وديسكورد نيترو والمزيد. ماذا تحتاج؟ 🎮",
+                        "أهلاً! أنا كوريكس الذكي، مساعدك في أونيكس بي دي. كيف يمكنني مساعدتك اليوم؟ ✨"
+                    ]
+                }
+            };
+
+            const currentResponses = responses[currentLanguage] || responses.en;
+
+            // Check for creator questions
+            const creatorQuestions = [
+                'who made you', 'who created you', 'who built you', 'who developed you',
+                'কে তোমাকে বানিয়েছে', 'কে তোমাকে তৈরি করেছে', 'তোমার নির্মাতা কে',
+                'من صنعك', 'من خلقك', 'من بناك'
+            ];
+
+            for (let question of creatorQuestions) {
+                if (lowerMessage.includes(question.toLowerCase())) {
+                    return currentResponses.creators;
+                }
+            }
+
+            // Product queries
+            if (lowerMessage.includes('free fire') || lowerMessage.includes('diamond') || 
+                lowerMessage.includes('ফ্রি ফায়ার') || lowerMessage.includes('ডায়মন্ড') ||
+                lowerMessage.includes('فري فاير') || lowerMessage.includes('ماسة')) {
+                return currentResponses.freefire;
+            }
+
+            if (lowerMessage.includes('pubg') || lowerMessage.includes('uc') ||
+                lowerMessage.includes('পাবজি') || lowerMessage.includes('ইউসি') ||
+                lowerMessage.includes('ببجي')) {
+                return currentResponses.pubg;
+            }
+
+            if (lowerMessage.includes('discord') || lowerMessage.includes('nitro') ||
+                lowerMessage.includes('ডিসকর্ড') || lowerMessage.includes('নাইট্রো') ||
+                lowerMessage.includes('ديسكورد') || lowerMessage.includes('نيترو')) {
+                return currentResponses.discord;
+            }
+
+            if (lowerMessage.includes('netflix') || lowerMessage.includes('নেটফ্লিক্স') || lowerMessage.includes('نتفليكس')) {
+                return currentResponses.netflix;
+            }
+
+            if (lowerMessage.includes('spotify') || lowerMessage.includes('স্পটিফাই') || lowerMessage.includes('سبوتيفاي')) {
+                return currentResponses.spotify;
+            }
+
+            if (lowerMessage.includes('minecraft') || lowerMessage.includes('মাইনক্রাফট') || lowerMessage.includes('ماين كرافت')) {
+                return currentResponses.minecraft;
+            }
+
+            if (lowerMessage.includes('order') || lowerMessage.includes('buy') ||
+                lowerMessage.includes('অর্ডার') || lowerMessage.includes('কিনতে') ||
+                lowerMessage.includes('طلب') || lowerMessage.includes('شراء')) {
+                return currentResponses.order;
+            }
+
+            if (lowerMessage.includes('about') || lowerMessage.includes('aunix') ||
+                lowerMessage.includes('সম্পর্কে') || lowerMessage.includes('আউনিক্স') ||
+                lowerMessage.includes('حول') || lowerMessage.includes('أونيكس')) {
+                return currentResponses.about;
+            }
+
+            // Default responses
+            return currentResponses.default[Math.floor(Math.random() * currentResponses.default.length)];
+        }
+
+        function handleAIKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendAIMessage();
+            }
+        }
+
+        // Form submission
+        function setupFormSubmission() {
+            const form = document.getElementById('checkoutForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const orderData = {
+                        productName: document.getElementById('product-name')?.value || '',
+                        customerName: document.getElementById('customer-name')?.value || '',
+                        paymentMethod: document.getElementById('payment-method')?.value || '',
+                        paymentNumber: document.getElementById('payment-number')?.value || '',
+                        email: document.getElementById('customer-email')?.value || '',
+                        transactionId: document.getElementById('transaction-id')?.value || '',
+                        discordId: document.getElementById('discord-id')?.value || '',
+                        note: document.getElementById('note')?.value || '',
+                        total: cart.reduce((sum, item) => sum + item.total, 0),
+                        date: new Date().toLocaleDateString(),
+                        items: [...cart]
+                    };
+                    
+                    orders.push(orderData);
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                    
+                    cart = [];
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    
+                    this.submit();
+                    
+                    updateUserStats();
+                    showNotification('🎉 Order placed successfully! We will contact you soon.', 'success');
+                    showPage('home-page');
+                });
+            }
+        }
+
+        // Initialize
+        function init() {
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme') || 'cyberpunk';
+            document.body.className = `theme-${savedTheme}`;
+            
+            // Load saved language
+            const savedLanguage = localStorage.getItem('language') || 'en';
+            currentLanguage = savedLanguage;
+            
+            // Update language options
+            const langOptions = document.querySelectorAll('.lang-option');
+            langOptions.forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-lang') === savedLanguage) {
+                    option.classList.add('active');
+                }
+            });
+            
+            // Load saved settings
+            const savedSettings = JSON.parse(localStorage.getItem('settings'));
+            if (savedSettings) {
+                settings = savedSettings;
+                
+                // Update toggle switches
+                const toggles = document.querySelectorAll('.toggle-switch');
+                const settingKeys = ['notifications', 'sounds', 'animations', 'autoDark'];
+                toggles.forEach((toggle, index) => {
+                    if (settings[settingKeys[index]]) {
+                        toggle.classList.add('active');
+                    } else {
+                        toggle.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Initialize enhanced features
+            initializeSearch();
+            initializeCurrencyConverter();
+            initializePriceFilter();
+            handleQuickLinks();
+            
+            updateCartDisplay();
+            updateOrderHistory();
+            updateUserStats();
+            updateUserProfileDisplay();
+            updatePriceFilterInfo();
+            updateLanguage();
+            updateThemeColors();
+            setupFormSubmission();
+            setupEventListeners();
+        }
+
+        // Enhanced Event Listeners
+        function setupEventListeners() {
+            // Sidebar toggle
+            document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
+            document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+
+            // Profile modal
+            document.getElementById('userInfoSection').addEventListener('click', openProfileModal);
+            document.getElementById('profileCloseBtn').addEventListener('click', closeProfileModal);
+            document.getElementById('profileForm').addEventListener('submit', saveProfile);
+
+            // Avatar selection
+            document.querySelectorAll('.avatar-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+            // Theme options
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const theme = this.getAttribute('data-theme');
+                    changeTheme(theme);
+                });
+            });
+
+            // Language options
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    switchLanguage(lang);
+                });
+            });
+
+            // Settings toggles
+            document.querySelectorAll('.toggle-switch').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const setting = this.getAttribute('data-setting');
+                    toggleSetting(this, setting);
+                });
+            });
+
+            // Enhanced Quick actions
+            document.getElementById('clearCacheBtn').addEventListener('click', clearCache);
+            document.getElementById('exportDataBtn').addEventListener('click', exportData);
+            document.getElementById('resetSettingsBtn').addEventListener('click', resetSettings);
+            document.getElementById('shareBtn').addEventListener('click', shareStore);
+            document.getElementById('feedbackBtn').addEventListener('click', sendFeedback);
+
+            // Mode buttons
+            document.getElementById('bdtModeBtn').addEventListener('click', () => switchMode('bdt'));
+            document.getElementById('cryptoModeBtn').addEventListener('click', () => switchMode('crypto'));
+
+            // Category cards
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    showProducts(category);
+                });
+            });
+
+            // Navigation items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const page = this.getAttribute('data-page');
+                    showPage(page);
+                });
+            });
+
+            // Back buttons
+            document.getElementById('backToCategories').addEventListener('click', () => showPage('home-page'));
+            document.getElementById('backToCart').addEventListener('click', () => showPage('orders-page'));
+
+            // Checkout button
+            document.getElementById('checkoutBtn').addEventListener('click', showCheckout);
+
+            // AI Bot
+            document.getElementById('aiBotButton').addEventListener('click', openAIBot);
+            document.getElementById('closeAiBtn').addEventListener('click', closeAIBot);
+            document.getElementById('quickToggle').addEventListener('click', toggleQuickQuestions);
+            document.getElementById('aiSendBtn').addEventListener('click', sendAIMessage);
+            document.getElementById('aiMessageInput').addEventListener('keypress', handleAIKeyPress);
+
+            // Quick question cards
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    sendPredefinedAI(question);
+                });
+            });
+
+            // Enhanced Search results click handler
+            document.getElementById('searchResults').addEventListener('click', function(e) {
+                const resultItem = e.target.closest('.search-result-item');
+                if (resultItem) {
+                    const category = resultItem.getAttribute('data-category');
+                    const type = resultItem.getAttribute('data-type');
+                    const index = parseInt(resultItem.getAttribute('data-index'));
+                    const variantIndex = resultItem.getAttribute('data-variant-index');
+                    
+                    hideSearchResults();
+                    document.getElementById('searchBar').value = '';
+                    
+                    if (type === 'variant' && variantIndex !== '') {
+                        addVariantToCart(index, parseInt(variantIndex));
+                    } else {
+                        showProducts(category);
+                    }
+                }
+            });
+
+            // Enhanced Product grid event delegation with Add to Cart support
+            document.getElementById('product-grid').addEventListener('click', function(e) {
+                if (e.target.classList.contains('qty-btn')) {
+                    const action = e.target.getAttribute('data-action');
+                    const category = e.target.getAttribute('data-category');
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    const change = action === 'increase' ? 1 : -1;
+                    changeQuantity(index, change, category);
+                } else if (e.target.classList.contains('add-to-cart')) {
+                    const category = e.target.getAttribute('data-category');
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    addToCart(category, index);
+                } else if (e.target.classList.contains('single-product-cart')) {
+                    const productIndex = parseInt(e.target.getAttribute('data-variant-product'));
+                    const variantIndex = parseInt(e.target.getAttribute('data-variant-index'));
+                    addVariantToCart(productIndex, variantIndex);
+                } else if (e.target.classList.contains('see-more-btn')) {
+                    const productIndex = parseInt(e.target.getAttribute('data-product-index'));
+                    toggleVariants(productIndex);
+                } else if (e.target.classList.contains('variant-item') || e.target.parentElement.classList.contains('variant-item')) {
+                    const variantElement = e.target.classList.contains('variant-item') ? e.target : e.target.parentElement;
+                    const productIndex = parseInt(variantElement.getAttribute('data-variant-product'));
+                    const variantIndex = parseInt(variantElement.getAttribute('data-variant-index'));
+                    addVariantToCart(productIndex, variantIndex);
+                }
+            });
+
+            // Cart items event delegation
+            document.getElementById('cart-items').addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-btn')) {
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    removeFromCart(index);
+                }
+            });
+
+            // AI modal click outside to close
+            document.getElementById('aiModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAIBot();
+                }
+            });
+
+            // Profile modal click outside to close
+            document.getElementById('profileModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeProfileModal();
+                }
+            });
+        }
+
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Enhanced mobile optimizations
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        document.addEventListener('touchmove', function() {}, {passive: true});
+
+        // Prevent zoom on double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Performance optimization: Intersection Observer for animations
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            });
+
+            // Observe category cards for staggered animations
+            document.querySelectorAll('.category-card').forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animationPlayState = 'paused';
+                observer.observe(card);
+            });
+        }
+    </script>
+
+<script>
+  const clickSound = document.getElementById("clickSound");
+  document.addEventListener("click", function (e) {
+    const isInteractive = e.target.closest("button, a, .nav-item, .category-card, .product-card, .variant-item");
+    if (isInteractive) {
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
+    }
+  });
+</script>
+
+</body>
+</html>
